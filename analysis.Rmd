@@ -1,0 +1,209 @@
+---
+title: "SCOOPS preliminary analyses"
+output: 
+  html_document: 
+    highlight: tango
+    theme: cosmo
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup}
+library(tidyverse)
+library(ggthemes)
+library(glue)
+library(googlesheets4)
+# gs4_auth()
+
+knitr::opts_chunk$set(message = FALSE, error = FALSE, warning = FALSE)
+.font <- "Source Sans Pro"
+theme_set(theme_bw(base_family = .font))
+theme_update(panel.grid = ggplot2::element_blank(),
+             strip.background = ggplot2::element_blank(),
+             legend.key = ggplot2::element_blank(),
+             panel.border = ggplot2::element_blank(),
+             axis.line = ggplot2::element_line(),
+             strip.text = ggplot2::element_text(face = "bold"))
+ds_id <- "1oL8J60p8DFpCmeb6iZRSwjAvMRt4-AhZQvkZb0qHS-c"
+```
+
+```{r load-data}
+weight_data <- read_sheet(ds_id)
+trays <- read_sheet(ds_id, sheet = "tray weights") |> select(-description)
+
+weight_data_tidy <- weight_data |>
+  mutate(station_hotbox = str_match(station_hotbox, "^([^ ]* [^ ]*).*\\((.*)\\)"),
+         station = station_hotbox[,2], hotbox = station_hotbox[,3],
+         .after = station_hotbox) |>
+  select(-station_hotbox) |>
+  mutate(week = str_remove(week, "Week ")) |>
+  mutate(across(where(is.list), \(col) col |> na_if("NA") |> na_if("?"))) |>
+  mutate(before_deducted = case_when(
+    str_detect(before_notes, "DEDUCTED ALREADY") ~ TRUE,
+    str_detect(before_notes, "NOT DEDUCTED") ~ FALSE,
+    TRUE ~ NA
+  ),
+  after_deducted = case_when(
+    str_detect(after_notes, "DEDUCTED ALREADY") ~ TRUE,
+    str_detect(after_notes, "NOT DEDUCTED") ~ FALSE,
+    TRUE ~ NA
+  )) |>
+  # filter(!is.na(before_number_full) & is.na(as.numeric(before_number_full)))
+  # filter(!is.na(before_weight_full) & is.na(as.numeric(before_weight_full)))
+  # filter(!is.na(after_number_full) & is.na(as.numeric(after_number_full)))
+  # filter(!is.na(after_number_partial) & is.na(as.numeric(after_number_partial)))
+  # filter(!is.na(after_weight_partial) & is.na(as.numeric(after_weight_partial)) &
+  #          !str_detect(after_weight_partial, "\n"))
+  mutate(across(c(before_number_full, before_weight_full,
+                  after_number_full, after_number_partial), as.numeric)) |>
+  mutate(across(c(before_type, after_type_partial), as.character)) |>
+  mutate(across(where(is.character), \(col) col |> na_if("NA"))) |>
+  mutate(after_weight_list = map(after_weight_partial, \(awp) str_split(awp, "\\n") |> unlist() |> as.double()),
+         after_number_check = map_int(after_weight_list, length))
+
+  # filter(after_number_partial == 5) |> pull(after_weight_list)
+  # filter(after_number_partial != 0 & after_number_partial != after_number_check) |>
+  # select(after_number_partial, after_weight_partial, after_weight_list, after_number_check)
+
+weight_data_trays <- weight_data_tidy |>
+  mutate(after_weight_partials = map_dbl(after_weight_list, partial(sum, na.rm = TRUE))) |>
+  left_join(trays, by = c("before_type" = "type")) |>
+  rename(before_weight_empty = empty_weight) |>
+  left_join(trays, by = c("after_type_partial" = "type")) |>
+  # filter(is.na(before_type))
+  # filter(is.na(after_type_partial))
+  rename(after_weight_empty = empty_weight)
+
+# weight_data_trays |> filter(!before_deducted, is.na(before_weight_empty))
+# weight_data_trays |> filter(!after_deducted, is.na(after_weight_empty))
+
+# weight_data_trays |> filter(is.na(before_deducted), is.na(before_weight_empty), before_weight_full != 0)
+# weight_data_trays |> filter(is.na(after_deducted), is.na(after_weight_empty), after_weight_partials != 0)
+
+weight_data_totaled <- weight_data_trays |>
+  mutate(across(c(before_number_full, before_weight_full, after_number_full,
+                  after_number_partial, after_weight_partials),
+                \(clm) if_else(is.na(clm), 0, clm))) |>
+  # filter(before_number_full != 0) |>
+  mutate(before_adjusted = if_else(before_deducted | before_weight_full == 0, before_weight_full,
+                                   before_weight_full - before_weight_empty),
+         # before_adjusted = if_else(is.na(before_deducted) | before_deducted, before_weight_full,
+         #                                  before_weight_full - before_weight_empty),
+         before_total = before_number_full * before_adjusted,
+         .before = before_notes) |>
+  mutate(after_adjusted_weight_partials = if_else(
+    # is.na(after_deducted) | after_deducted, after_weight_partials,
+    after_deducted | after_weight_partials == 0, after_weight_partials,
+    after_weight_partials - after_weight_empty * after_number_check),
+         after_total = after_adjusted_weight_partials + after_number_full * before_adjusted,
+         .before = after_notes)
+
+# weight_data_totaled |>
+#   filter(is.na(before_total)) |> select(week, day, meal, contains("before"))
+# weight_data_totaled |>
+#   filter(is.na(after_total)) |> select(week, day, meal, contains("after"))
+# weight_data_totaled |>
+#   filter(before_number_full != 0, before_total == 0) |> select(week, day, meal, contains("before"))
+# weight_data_totaled |>
+#   filter(after_number_full != 0, after_total == 0) |> select(week, day, meal, contains("after"))
+# weight_data_totaled |>
+#   filter(after_number_partial != 0, after_total == 0) |> select(week, day, meal, contains("after"))
+
+total_weights <- weight_data_totaled |>
+  select(condition:dish, meal, contains("total"))
+
+# total_weights |>
+#   filter(is.na(dish), before_total != 0 | after_total != 0)
+# total_weights |> filter(is.na(before_total))
+# total_weights |> filter(is.na(after_total))
+
+day_weights <- total_weights |>
+  filter(!is.na(dish)) |>
+  group_by(condition, week, day, monthday, meal, station, dish) |>
+  summarise(before_total = sum(before_total, na.rm = TRUE),
+            after_total = sum(after_total, na.rm = TRUE)) |>
+  ungroup() |>
+  filter(before_total != 0) |>
+  mutate(delta = before_total - after_total,
+         meal = fct_relevel(meal, "lunch"),
+         day = day |> fct_recode("R" = "Th") |> fct_relevel("M", "T", "W", "R", "F")) |>
+  arrange(week, day, meal, station)
+
+# day_weights |> count(week, day, meal)
+# day_weights |> filter(after_total >= before_total)
+
+day_weights |> write_sheet(ds_id, "day totals")
+```
+
+```{r plot-conditions, fig.width=10, fig.height=3.5}
+day_weights_target <- day_weights |>
+  filter(station == "Cardinal Sage") |>
+  select(-station, -before_total, -after_total) |>
+  rename(delta_target = delta,
+         dish_target = dish)
+  
+day_weights_total <- day_weights |>
+  group_by(condition, week, day, monthday, meal) |>
+  summarise(delta_total = sum(delta)) |>
+  ungroup()
+
+weights_pilot <- readRDS("data/weights_pilot.rds") |>
+  filter(station == "total") |>
+  select(-station, -date) |>
+  rename(dish_target = meat, delta = weight) |>
+  mutate(measure = "target", source = "pilot", meal = "lunch",
+         week = rep(c("1", "2"), each = 5), day = rep(c("M", "T", "W", "R", "F"), 2))
+
+weight_summary <- day_weights_total |> full_join(day_weights_target) |>
+  pivot_longer(contains("delta"), names_to = "measure", values_to = "delta",
+               names_prefix = "delta_") |>
+  select(-monthday) |>
+  mutate(dish_target = if_else(measure == "target", tolower(dish_target), as.character(NA)),
+         source = "study") |>
+  bind_rows(weights_pilot) |>
+  mutate(measure = fct_recode(measure, "Target (Cardinal Sage)" = "target",
+                              "Total (across dining hall)" = "total"),
+         meal = meal |> fct_relevel("lunch") |> fct_recode("Lunch" = "lunch", "Dinner" = "dinner"),
+         week_day = paste0(week, day))
+
+weight_ns <- weight_summary |>
+  count(condition, meal, measure) |>
+  mutate(n = glue("n = {n}"))
+
+ggplot(weight_summary, aes(x = condition, y = delta)) +
+  facet_wrap(vars(meal, measure), nrow = 1) +
+  geom_text(aes(label = day, colour = source), family = .font, size = 2,
+            position = position_dodge(width = 0.2)) +
+  geom_text(aes(label = n), y = min(weight_summary$delta, na.rm = TRUE) - 20,
+            size = 3, family = .font, data = weight_ns) +
+  stat_summary(fun = mean, geom = "crossbar", width = 0.4) +
+  scale_colour_ptol() +
+  expand_limits(y = min(weight_summary$delta, na.rm = TRUE) - 20) +
+  labs(x = "", y = "Weight of meat used (lbs)")
+
+# ggsave(glue("scoops_conditions_{today()}.png"), width = 10, height = 3.5)
+```
+
+```{r plot-meat-types, fig.width=10, fig.height=3.5}
+weight_target <- weight_summary |>
+  filter(str_detect(meal, "Lunch"), str_detect(measure, "Target"))
+
+weight_meat_ns <- weight_target |>
+  count(condition, dish_target) |>
+  mutate(n = glue("n = {n}"))
+
+ggplot(weight_target, aes(x = condition, y = delta)) +
+  facet_wrap(vars(dish_target), nrow = 1) +
+  # geom_text(aes(label = dish_target, colour = dish_target), family = .font, size = 2.5) +
+  geom_text(aes(label = day, colour = source), family = .font, size = 2.5,
+            position = position_dodge(width = 0.2)) +
+  # geom_point(aes(colour = source), position = position_dodge(width = 0.2)) +
+  geom_text(aes(label = n), y = min(weight_target$delta, na.rm = TRUE) - 20,
+            size = 3, family = .font, data = weight_meat_ns) +
+  stat_summary(fun = mean, geom = "crossbar", width = 0.4) +
+  scale_colour_ptol() +
+  expand_limits(y = min(weight_target$delta, na.rm = TRUE) - 20) +
+  labs(x = "", y = "Weight of meat used (lbs)")
+
+# ggsave(glue("scoops_meats_{today()}.png"), width = 10, height = 3.5)
+```
