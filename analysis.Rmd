@@ -121,7 +121,7 @@ weights_pilot <- readRDS("data/weights_pilot.rds") |>
   mutate(measure = "target", source = "pilot", meal = "lunch",
          week = rep(c("1", "2"), each = 5), day = rep(c("M", "T", "W", "R", "F"), 2))
 
-weight_summary <- day_weights_total |> full_join(day_weights_target) |>
+weights_summary <- day_weights_total |> full_join(day_weights_target) |>
   pivot_longer(contains("delta"), names_to = "measure", values_to = "delta",
                names_prefix = "delta_") |>
   mutate(meat_type = if_else(measure == "target", tolower(meat_type), as.character(NA)),
@@ -135,40 +135,44 @@ weight_summary <- day_weights_total |> full_join(day_weights_target) |>
 
 Plot target and total data by condition x meal.
 ```{r plot-conditions, fig.width=10, fig.height=3.5}
-weight_ns <- weight_summary |>
+weights_ns <- weights_summary |>
   count(condition, meal, measure) |>
   mutate(n = glue("n = {n}"))
 
-ggplot(weight_summary, aes(x = condition, y = delta)) +
+ggplot(weights_summary, aes(x = condition, y = delta)) +
   facet_wrap(vars(meal, measure), nrow = 1) +
   geom_text(aes(label = day, colour = source), family = .font, size = 2,
             position = position_dodge(width = 0.2)) +
-  geom_text(aes(label = n), y = min(weight_summary$delta, na.rm = TRUE) - 20,
-            size = 3, family = .font, data = weight_ns) +
+  geom_text(aes(label = n), y = min(weights_summary$delta, na.rm = TRUE) - 20,
+            size = 3, family = .font, data = weights_ns) +
   stat_summary(fun = mean, geom = "crossbar", width = 0.4) +
   scale_colour_ptol() +
-  expand_limits(y = min(weight_summary$delta, na.rm = TRUE) - 20) +
+  expand_limits(y = min(weights_summary$delta, na.rm = TRUE) - 20) +
   labs(x = "", y = "Weight of meat used (lbs)")
 ```
 
 Plot target data by condition x meat type.
 ```{r plot-meat-types, fig.width=10, fig.height=3.5}
-weight_target <- weight_summary |>
-  filter(str_detect(meal, "Lunch"), str_detect(measure, "Target"))
+weights_target <- weights_summary |>
+  filter(str_detect(meal, "Lunch"), str_detect(measure, "Target")) |>
+  select(-meal, -measure)
+# write_rds(weights_target, "data/weights_target.rds")
+weights_total <- day_weights_total |> rename(delta = delta_total)
+# write_rds(weights_total, "data/weights_total.rds")
 
-weight_meat_ns <- weight_target |>
+weights_meat_ns <- weights_target |>
   count(condition, meat_type) |>
   mutate(n = glue("n = {n}"))
 
-ggplot(weight_target, aes(x = condition, y = delta)) +
+ggplot(weights_target, aes(x = condition, y = delta)) +
   facet_wrap(vars(meat_type), nrow = 1) +
   geom_text(aes(label = day, colour = source), family = .font, size = 2.5,
             position = position_dodge(width = 0.2)) +
-  geom_text(aes(label = n), y = min(weight_target$delta, na.rm = TRUE) - 20,
-            size = 3, family = .font, data = weight_meat_ns) +
+  geom_text(aes(label = n), y = min(weights_target$delta, na.rm = TRUE) - 20,
+            size = 3, family = .font, data = weights_meat_ns) +
   stat_summary(fun = mean, geom = "crossbar", width = 0.4) +
   scale_colour_ptol() +
-  expand_limits(y = min(weight_target$delta, na.rm = TRUE) - 20) +
+  expand_limits(y = min(weights_target$delta, na.rm = TRUE) - 20) +
   labs(x = "", y = "Weight of meat used (lbs)")
 ```
 
@@ -183,14 +187,14 @@ Look at a bunch of simple models.
 
 Models for target (cardinal sage @ lunch):
 ```{r}
-lm(delta ~ condition, data = weight_target) |> summary()
-lm(delta ~ condition + source, data = weight_target) |> summary()
-lm(delta ~ condition + meat_type, data = weight_target) |> summary()
-lm(delta ~ condition + source + meat_type, data = weight_target) |> summary()
+lm(delta ~ condition, data = weights_target) |> summary()
+lm(delta ~ condition + source, data = weights_target) |> summary()
+lm(delta ~ condition + meat_type, data = weights_target) |> summary()
+lm(delta ~ condition + source + meat_type, data = weights_target) |> summary()
 ```
 
 Models for total (dining hall @ lunch + dinner):
 ```{r}
-lm(delta_total ~ condition, data = day_weights_total) |> summary()
-lm(delta_total ~ condition + meal, data = day_weights_total) |> summary()
+lm(delta ~ condition, data = weights_total) |> summary()
+lm(delta ~ condition + meal, data = weights_total) |> summary()
 ```
