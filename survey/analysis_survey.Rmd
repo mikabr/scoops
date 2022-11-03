@@ -5,6 +5,7 @@ output:
     highlight_downlit: yes
     theme: cosmo
     df_print: paged
+    code_folding: hide
 editor_options: 
   chunk_output_type: console
 ---
@@ -16,12 +17,13 @@ library(ggforce)
 library(glue)
 library(lubridate)
 library(broom)
+library(ggh4x)
 
 options(digits = 2)
 knitr::opts_chunk$set(message = FALSE, error = FALSE, warning = FALSE,
-                      rows.print = 25)
+                      rows.print = 25, dev.args = list(png = list(type = "cairo")))
 .font <- "Source Sans Pro"
-theme_set(theme_bw(base_family = .font))
+theme_set(theme_bw(base_family = .font, base_size = 13))
 theme_update(panel.grid = ggplot2::element_blank(),
              strip.background = ggplot2::element_blank(),
              legend.key = ggplot2::element_blank(),
@@ -33,23 +35,24 @@ theme_update(panel.grid = ggplot2::element_blank(),
 ## Load and tidy data
 
 ```{r, echo=FALSE, eval=FALSE}
-read_csv("private/SCOOPS_qualtrics.csv") |>
+read_csv(glue("private/SCOOPS_qualtrics_{today()}.csv")) |>
   select(-IPAddress, -email, -LocationLatitude, -LocationLongitude) |>
-  write_csv("data/SCOOPS_qualtrics_sanitized.csv")
+  write_csv(glue("data/SCOOPS_qualtrics_sanitized_{today()}.csv"))
 ```
 
 ```{r}
+survey_raw <- read_csv(glue("data/SCOOPS_qualtrics_sanitized_{today()}.csv"))
+
+# code the condition of each day
 start_date <- ymd("2022-10-03")
-end_date <- ymd("2022-10-21")
+end_date <- ymd("2022-10-28")
 conditions <- tibble(date = seq(start_date, end_date, by = "days")) |>
   filter(wday(date, week_start = 1) <= 5) |>
   mutate(condition = rep(c("control", "intervention"), each = 5, length.out = n()),
          condition = as_factor(condition),
          week = rep(1:6, each = 5, length.out = n()))
 
-survey_raw <- read_csv("data/SCOOPS_qualtrics_sanitized.csv")
-
-survey <- survey_raw |>
+survey_tidy <- survey_raw |>
   slice(3:n()) |> # first two rows are qualtrics metadata
   filter(Finished == "True") |> # remove empty responses
   rename(recorded = RecordedDate) |> # keep relevant metadata cols
@@ -62,10 +65,28 @@ survey <- survey_raw |>
          day = wday(date, label = TRUE), hour = hour(recorded),
          .after = recorded) |> # get useful components of datetime
   mutate(in_range = date >= start_date & date <= end_date &
-         !(day %in% c("Sat", "Sun")) & hour >= 11 & hour < 16) |> # code responses from outside of study range
+         !(day %in% c("Sat", "Sun")) & hour >= 11 & hour <= 16) |> # code responses from outside of study range
   left_join(conditions) |> # code conditions
   mutate(id = 1:n()) |>
   select(condition, week, everything())
+```
+
+```{r}
+# add in meat types from weight data
+# weights_tidy <- read_rds("../data/weights_tidy.rds")
+# day_meats <- weights_tidy |>
+#   filter(meal == "lunch", !is.na(dish)) |>
+#   distinct(monthday, station, dish) |>
+#   mutate(station = fct_recode(station, target = "Cardinal Sage", other = "Core Menu"),
+#          dish = str_to_lower(dish),
+#          date = date(monthday)) |>
+#   select(-monthday) |>
+#   pivot_wider(names_from = station, values_from = dish, names_prefix = "meat_")
+day_meats <- read_csv("data/day_meats.csv") |> select(date, meat_target)
+
+survey <- survey_tidy |>
+  left_join(day_meats, by = "date") |>
+  mutate(across(where(is.character), as_factor))
 ```
 
 ## Response counts
@@ -121,7 +142,7 @@ bind_rows(
 
 Plot values by week:
 
-```{r, fig.width=8, fig.height=4.5}
+```{r, fig.width=10, fig.height=4.5}
 survey_long <- survey_filtered |>
   pivot_longer(c(satisfaction, hunger, fullness), names_to = "measure", values_to = "value") |>
   mutate(measure = fct_rev(measure))
@@ -145,15 +166,18 @@ Check if intervention is affecting whether meat was eaten:
 ```{r}
 meat_inclusion_model <- lm(meat_inclusion ~ condition, data = survey_filtered)
 summary(meat_inclusion_model)
-augment(meat_inclusion_model, newdata = survey_filtered |> distinct(condition))
+augment(meat_inclusion_model, se_fit = TRUE, interval = "confidence",
+        newdata = survey_filtered |> distinct(condition))
 ```
 
-__Seems like a higher proportion of respondents are eating meat in intervention than control.__
+No effect of condition on meat inclusion.
+
+<!-- Seems like a higher proportion of respondents are eating meat in intervention than control. -->
 
 ### By condition
 
 ```{r}
-contrasts(survey_long$condition) <- contr.sum
+# contrasts(survey_long$condition) <- contr.sum
 
 model_fun <- \(d) lm(value ~ condition, data = d)
 coef_fun <- \(m) tidy(m, conf.int = TRUE) |> mutate(p.value = sprintf("%.2f", round(p.value, 2)))
@@ -167,27 +191,23 @@ survey_fits <- survey_long |>
          fits = map(model, fits_fun))
 ```
 
-Differences by condition:
+Differences by condition (condition is treatment coded):
 ```{r}
-survey_fits |>
-  select(measure, coefs) |>
-  unnest(coefs)
-
-survey_fits |>
-  select(measure, fits) |>
-  unnest(fits)
+survey_fits |> select(measure, coefs) |> unnest(coefs)
+survey_fits |> select(measure, fits) |> unnest(fits)
 ```
 
 ```{r, echo=FALSE}
-hunger_fits <- survey_fits |>
-  select(measure, fits) |>
-  unnest(fits) |>
-  filter(measure == "hunger")
-hungers <- set_names(hunger_fits$.fitted, hunger_fits$condition)
-hunger_increase <- hungers[["intervention"]] - hungers[["control"]] / hungers[["control"]]
+# hunger_fits <- survey_fits |>
+#   select(measure, fits) |>
+#   unnest(fits) |>
+#   filter(measure == "hunger")
+# hungers <- set_names(hunger_fits$.fitted, hunger_fits$condition)
+# hunger_increase <- hungers[["intervention"]] - hungers[["control"]]
+# hunger_increase <- hungers[["intervention"]] - hungers[["control"]] / hungers[["control"]]
 ```
 
-__No effect for satisfaction or fullness, respondents are `r hunger_increase`% more hungry in intervention that in control.__
+No effect of condition on any of satisfaction, hunger, and fullness.
 
 Plot responses by condition with CIs from above models:
 ```{r, fig.width=8, fig.height=4.5}
@@ -203,18 +223,64 @@ ggplot(survey_long, aes(x = condition, y = value, color = condition)) +
         axis.title.x = element_blank())
 ```
 
-### By condition x meat_inclusion
+### By condition and meat type
 
-Now split up by whether meat was included:
+Differences by condition and meat type (both are effects coded):
 ```{r}
+type_cells <- survey_long |> distinct(meat_target, condition)
+model_fun_type <- \(d) lm(value ~ condition * meat_target, data = d)
+fits_fun_type <- \(m) augment(m, se_fit = TRUE, interval = "confidence",
+                              newdata = type_cells)
+
+contrasts(survey_long$condition) <- contr.sum
+contrasts(survey_long$meat_target) <- contr.sum
+survey_fits_type <- survey_long |>
+  filter(!is.na(meat_target)) |>
+  nest(data = -measure) |>
+  mutate(model = map(data, model_fun_type),
+         coefs = map(model, coef_fun),
+         fits = map(model, fits_fun_type))
+
+survey_fits_type |> select(measure, coefs) |> unnest(coefs)
+survey_fits_type |> select(measure, fits) |> unnest(fits) |> arrange(measure, meat_target, condition)
+```
+
+Controlled for meat type, no effect of condition on fullness.
+
+Possible effect of condition on hunger (higher hunger in intervention). Not significantly different between meat types.
+
+Possible effect of condition and meat type on satisfaction (satisfaction is higher in intervention for pork and beef but lower for chicken).
+
+```{r, fig.width=10, fig.height=4.5}
+fits_type <- survey_fits_type |> select(measure, fits) |> unnest(fits)
+ggplot(survey_long, aes(x = condition, y = value, color = condition)) +
+  facet_nested(~ measure + meat_target) +
+  # facet_wrap(vars(measure, meat_target), nrow = 1) +
+  geom_sina(aes(group = date), size = 0.6, alpha = 0.6, maxwidth = 0.6) +
+  geom_crossbar(aes(y = .fitted, ymin = .lower, ymax = .upper), width = 0.8,
+                data = fits_type) +
+  scale_colour_ptol() +
+  labs(y = "Response") +
+  theme(legend.position = "bottom", legend.title = element_blank(),
+        axis.title.x = element_blank())
+```
+
+### By condition, meat type, and meat inclusion
+
+Differences by condition and meat type (both are effects coded), split up by whether meat was included.
+```{r}
+# contrasts(survey_long$condition) <- contr.treatment
 survey_fits_meat <- survey_long |>
   nest(data = -c(measure, meat_inclusion)) |>
   mutate(model = map(data, model_fun),
          coefs = map(model, coef_fun),
-         fits = map(model, fits_fun))
+         fits = map(model, fits_fun)) |>
+  mutate(model_type = map(data, model_fun_type),
+         coefs_type = map(model_type, coef_fun),
+         fits_type = map(model_type, fits_fun_type))
 ```
 
-Differences by condition and whether meat was included:
+Differences by condition, split by whether meat was included:
 ```{r}
 survey_fits_meat |>
   select(measure, meat_inclusion, coefs) |>
@@ -225,28 +291,45 @@ survey_fits_meat |>
   unnest(fits)
 ```
 
-__No effects for satisfaction or fullness for both groups.__
+No effects for satisfaction or fullness for both groups.
 
 ```{r, echo=FALSE}
 hunger_fits_meat <- survey_fits_meat |>
   select(measure, meat_inclusion, fits) |>
   unnest(fits) |>
-  filter(measure == "hunger", meat_inclusion == "TRUE")
+  filter(measure == "hunger", meat_inclusion)
 hungers_meat <- set_names(hunger_fits_meat$.fitted, hunger_fits_meat$condition)
-hunger_increase_meat <- hungers_meat[["intervention"]] - hungers_meat[["control"]] / hungers_meat[["control"]]
+hunger_increase_meat <- hungers_meat[["intervention"]] - hungers_meat[["control"]]
+# hunger_increase_meat <- hungers_meat[["intervention"]] - hungers_meat[["control"]] / hungers_meat[["control"]]
 ```
 
-__Hunger effect is coming from respondents who did not eat meat, they are `r hunger_increase_meat`% more hungry in intervention that in control.__
+Hunger effect is coming from respondents who did not eat meat, they report `r hunger_increase_meat` scale points higher hunger in intervention that in control.
+
+Differences by condition and meat type, split by whether meat was included:
+```{r}
+survey_fits_meat |>
+  select(measure, meat_inclusion, coefs_type) |>
+  unnest(coefs_type)
+
+survey_fits_meat |>
+  select(measure, meat_inclusion, fits_type) |>
+  unnest(fits_type)
+```
+
+Satisfaction interaction no longer present when split by meat inclusion.
+
+Hunger effect from respondents who did not eat meat is still present controlled for meat type, no significant differences in it by meat type.
 
 Plot responses by condition and meat inclusion with CIs from above models:
-```{r, fig.width=10, fig.height=4.5}
-fits_meat <- survey_fits_meat |> select(measure, meat_inclusion, fits) |> unnest(fits) |>
+```{r, fig.width=10, fig.height=8}
+fits_meat <- survey_fits_meat |> select(measure, meat_inclusion, fits_type) |>
+  unnest(fits_type) |>
   mutate(meat_inclusion = if_else(meat_inclusion, "yes meat", "no meat"))
 survey_long <- survey_long |>
   mutate(meat_inclusion = if_else(meat_inclusion, "yes meat", "no meat"))
 
 ggplot(survey_long, aes(x = condition, y = value, color = condition)) +
-  facet_wrap(vars(measure, meat_inclusion), nrow = 1) +
+  facet_nested(meat_inclusion ~ measure + meat_target) +
   geom_sina(aes(group = date), size = 0.6, alpha = 0.6, maxwidth = 0.6) +
   geom_crossbar(aes(y = .fitted, ymin = .lower, ymax = .upper), width = 0.8,
                 position = position_dodge(),
