@@ -15,7 +15,8 @@ library(glue)
 library(googlesheets4)
 # gs4_auth()
 
-knitr::opts_chunk$set(message = FALSE, error = FALSE, warning = FALSE, cache = TRUE)
+knitr::opts_chunk$set(message = FALSE, error = FALSE, warning = FALSE, cache = TRUE,
+                      dev.args = list(png = list(type = "cairo")))
 .font <- "Source Sans Pro"
 theme_set(theme_bw(base_family = .font))
 theme_update(panel.grid = ggplot2::element_blank(),
@@ -54,6 +55,7 @@ weight_data_tidy <- weight_data |>
   mutate(across(where(is.character), \(col) col |> na_if("NA"))) |>
   mutate(after_weight_list = map(after_weight_partial, \(awp) str_split(awp, "\\n") |> unlist() |> as.double()),
          after_number_check = map_int(after_weight_list, length))
+write_rds(weight_data_tidy, "data/weights_tidy.rds")
 ```
 
 Read and join in empty tray weights.
@@ -99,7 +101,7 @@ day_weights <- total_weights |>
          day = day |> fct_recode("R" = "Th") |> fct_relevel("M", "T", "W", "R", "F")) |>
   arrange(week, day, meal, station)
 
-day_weights |> write_sheet(ds_id, "day totals")
+# day_weights |> write_sheet(ds_id, "day totals")
 ```
 
 Separate out target vs. total data, combine with pilot data.
