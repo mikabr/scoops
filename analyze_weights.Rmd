@@ -1,0 +1,231 @@
+---
+title: "Untitled"
+output: html_document
+date: "2022-12-05"
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(ggthemes)
+library(glue)
+library(sandwich)
+library(lmtest)
+library(broom)
+
+knitr::opts_chunk$set(message = FALSE, error = FALSE, warning = FALSE,
+                      cache = TRUE, dev.args = list(png = list(type = "cairo")))
+.font <- "Source Sans Pro"
+theme_set(theme_bw(base_family = .font))
+theme_update(panel.grid = ggplot2::element_blank(),
+             strip.background = ggplot2::element_blank(),
+             legend.key = ggplot2::element_blank(),
+             panel.border = ggplot2::element_blank(),
+             axis.line = ggplot2::element_line(),
+             strip.text = ggplot2::element_text(face = "bold"))
+```
+
+```{r}
+weights_summary <- read_rds("data/weights_summary_2022-12-13.rds")
+
+measures <- c(delta = "Weight of meat used (lbs)",
+              delta_prop = "Proportion of meat used",
+              delta_norm = "Weight of meat used per patron")
+```
+
+```{r}
+weights_summary |> count(stage, condition)
+```
+
+## Lunch during main study
+
+```{r}
+# 1) lunch when intervention was happening at lunch but not at dinner
+study_lunch_target <- weights_summary |>
+  filter(stage != "self-serve", meal == "lunch", station == "target")
+# contrasts(study_lunch_target$condition) <- contr.sum
+# contrasts(study_lunch_target$stage) <- contr.sum
+
+mod_1 <- lm(delta ~ condition + stage, data = study_lunch_target)
+coef_1 <- tidy(mod_1, conf.int = TRUE)
+
+# 1a) same as 1 but on delta_prop (no stage because can't do prop for pilot)
+mod_1a <- lm(delta_prop ~ condition, data = study_lunch_target)
+sand_1a <- coefci(mod_1a, vcov = vcovHC(mod_1a, type = "HC0"))
+# coeftest(mod_1a, vcov = vcovHC(mod_1a, type = "HC0"))
+coef_1a <- tidy(mod_1a) |> bind_cols(sand_1a) |> rename(ci_lower = `2.5 %`, ci_upper = `97.5 %`)
+
+# 1b) same as 1 but with delta_norm (card swipes)
+mod_1b <- lm(delta_norm ~ condition + stage, data = study_lunch_target)
+sand_1b <- coefci(mod_1b, vcov = vcovHC(mod_1b, type = "HC0"))
+coef_1b <- tidy(mod_1b) |> bind_cols(sand_1b) |> rename(ci_lower = `2.5 %`, ci_upper = `97.5 %`)
+
+cells_1 <- study_lunch_target |> distinct(condition, stage) |> arrange(condition)
+fits_1 <- bind_rows(
+  augment(mod_1, interval = "confidence", newdata = cells_1) |>
+    mutate(measure = "delta"),
+  augment(mod_1a, interval = "confidence", newdata = cells_1) |>
+    mutate(measure = "delta_prop") |> filter(stage == "main study"),
+  augment(mod_1b, interval = "confidence", newdata = cells_1) |>
+    mutate(measure = "delta_norm")
+)
+```
+
+```{r}
+before_after <- study_lunch_target |>
+  filter(!is.na(before_total)) |>
+  select(-contains("delta")) |>
+  pivot_longer(contains("total"), names_to = "timing", values_to = "weight") |>
+  mutate(timing = str_remove(timing, "_total") |> fct_rev(),
+         weight_swipes = weight / swipes) |>
+  pivot_longer(contains("weight"), names_to = "measure", values_to = "value")
+
+ba_means <- before_after |>
+  group_by(measure, timing, condition) |>
+  summarise(value = mean(value),
+            date = mean(date))
+
+ggplot(before_after,
+       aes(x = timing, y = value, colour = condition, group = date)) +
+  facet_wrap(vars(measure), scales = "free", strip.position = "left",
+             labeller = labeller(measure = c(weight = "Weight of meat (lbs)",
+                                             weight_swipes = "Weight of meat per patron"))) +
+  # geom_point() +
+  geom_line(alpha = 0.75) +
+  geom_point(size = 1, alpha = 0.5) +
+  # geom_line(data = ba_means, size = 1) +
+  scale_colour_ptol(name = "") +
+  labs(x = "", y = "Weight of meat (lbs)",
+       caption = "Weight measures for the target station at lunch when intervention was happening at lunch but not at dinner.") +
+  theme(strip.placement = "outside",
+        axis.title = element_blank(),
+        legend.position = "bottom")
+
+ggsave("weights_slopes.png", width = 7, height = 3)
+```
+
+```{r}
+study_lunch_target |>
+  pivot_longer(contains("delta"), names_to = "measure", values_to = "value") |>
+  mutate(measure = fct_relevel(measure, "delta", "delta_prop")) |>
+ggplot(aes(x = condition, y = value, colour = stage)) +
+  facet_wrap(vars(measure), scales = "free", strip.position = "left",
+             labeller = labeller(measure = measures)) +
+  geom_point(position = position_dodge(width = 0.35), size = 1, alpha = 0.5) +
+  # geom_text(aes(label = day, colour = stage), family = .font, size = 2,
+  #           position = position_dodge(width = 0.2)) +
+  geom_pointrange(aes(y = .fitted, ymin = .lower, ymax = .upper), data = fits_1,
+                  position = position_dodge(width = 0.2)) +
+  scale_colour_ptol(name = "") +
+  labs(caption = "Figure 1: Weight measures for the target station at lunch when intervention was happening at lunch but not at dinner.") +
+  theme(strip.placement = "outside",
+        axis.title = element_blank(),
+        legend.position = "bottom")
+ggsave("study_lunch_target.png", width = 7, height = 3)
+```
+
+## Dinner during main study
+
+```{r}
+# 2) dinner when intervention was happening at lunch but not at dinner
+# (spillover for 1)  (no stage because pilot didn't measure dinner)
+study_dinner <- weights_summary |>
+  filter(stage != "self-serve", meal == "dinner") |>
+  group_by(stage, condition, week, day, date) |>
+  mutate(before = delta / delta_prop) |>
+  summarise(delta = sum(delta), delta_norm = sum(delta_norm),
+            delta_prop = delta / sum(before)) |>
+  ungroup()
+
+mod_2 <- lm(delta ~ condition, data = study_dinner)
+coef_2 <- tidy(mod_2, conf.int = TRUE)
+
+# 2a) same as 2 but on deltaprop
+mod_2a <- lm(delta_prop ~ condition, data = study_dinner)
+sand_2a <- coefci(mod_2a, vcov = vcovHC(mod_2a, type = "HC0"))
+coef_2a <- tidy(mod_2a) |> bind_cols(sand_2a) |> rename(ci_lower = `2.5 %`, ci_upper = `97.5 %`)
+
+# 2b) same as 2 but with deltanorm (card swipes)
+mod_2b <- lm(delta_norm ~ condition, data = study_dinner)
+sand_2b <- coefci(mod_2b, vcov = vcovHC(mod_2b, type = "HC0"))
+coef_2b <- tidy(mod_2b) |> bind_cols(sand_2b) |> rename(ci_lower = `2.5 %`, ci_upper = `97.5 %`)
+
+# cells_2 <- study_dinner |> distinct(condition, station)
+cells_2 <- study_dinner |> distinct(condition)
+fits_2 <- bind_rows(
+  augment(mod_2, interval = "confidence", newdata = cells_2) |>
+    mutate(measure = "delta"),
+  augment(mod_2a, interval = "confidence", newdata = cells_2) |>
+    mutate(measure = "delta_prop"),
+  augment(mod_2b, interval = "confidence", newdata = cells_2) |>
+    mutate(measure = "delta_norm")
+)
+
+main <- ptol_pal()(2)[2]
+study_dinner |>
+  pivot_longer(contains("delta"), names_to = "measure", values_to = "value") |>
+  mutate(measure = fct_relevel(measure, "delta", "delta_prop")) |>
+ggplot(aes(x = condition, y = value)) + #, colour = stage)) +
+  facet_wrap(vars(measure), scales = "free", strip.position = "left",
+             labeller = labeller(measure = measures)) +
+  geom_point(position = position_dodge(width = 0.35), size = 1, alpha = 0.5,
+             colour = main) +
+  # geom_text(aes(label = day), family = .font, size = 2,
+  #           position = position_dodge(width = 0.2)) +
+  geom_pointrange(aes(y = .fitted, ymin = .lower, ymax = .upper), data = fits_2,
+                  position = position_dodge(width = 0.2), color = main) +
+  # scale_colour_ptol(name = "") +
+    labs(caption = "Figure 2: Weight measures for the dining hall at dinner when intervention was happening at lunch but not at dinner.") +
+  theme(strip.placement = "outside",
+        axis.title = element_blank(),
+        legend.position = "bottom")
+ggsave("study_dinner.png", width = 7, height = 2.75)
+```
+
+## Lunch during self-serve
+
+```{r}
+# 3) dinner when intervention was happening at dinner
+# (spillover not applicable)
+self_dinner_target <- weights_summary |>
+  filter(stage == "self-serve", station == "target")
+
+mod_3 <- lm(delta ~ condition, data = self_dinner_target)
+coef_3 <- tidy(mod_3, conf.int = TRUE)
+
+mod_3a <- lm(delta_prop ~ condition, data = self_dinner_target)
+sand_3a <- coefci(mod_3a, vcov = vcovHC(mod_3a, type = "HC0"))
+coef_3a <- tidy(mod_3a) |> bind_cols(sand_3a) |> rename(ci_lower = `2.5 %`, ci_upper = `97.5 %`)
+
+mod_3b <- lm(delta_norm ~ condition, data = self_dinner_target)
+sand_3b <- coefci(mod_3b, vcov = vcovHC(mod_3b, type = "HC0"))
+coef_3b <- tidy(mod_3b) |> bind_cols(sand_3b) |> rename(ci_lower = `2.5 %`, ci_upper = `97.5 %`)
+
+cells_3 <- study_dinner |> distinct(condition)
+fits_3 <- bind_rows(
+  augment(mod_3, interval = "confidence", newdata = cells_3) |>
+    mutate(measure = "delta"),
+  augment(mod_3a, interval = "confidence", newdata = cells_3) |>
+    mutate(measure = "delta_prop"),
+  augment(mod_3b, interval = "confidence", newdata = cells_3) |>
+    mutate(measure = "delta_norm")
+)
+
+self <- ptol_pal()(3)[2]
+self_dinner_target |>
+  pivot_longer(contains("delta"), names_to = "measure", values_to = "value") |>
+  mutate(measure = fct_relevel(measure, "delta", "delta_prop")) |>
+ggplot(aes(x = condition, y = value)) +
+  facet_wrap(vars(measure), scales = "free", strip.position = "left",
+             labeller = labeller(measure = measures)) +
+  geom_point(size = 1, alpha = 0.5, color = self) +
+  # geom_text(aes(label = day), family = .font, size = 2,
+  #           position = position_dodge(width = 0.2)) +
+  geom_pointrange(aes(y = .fitted, ymin = .lower, ymax = .upper), data = fits_3,
+                  color = self) +
+  scale_colour_ptol(name = "") +
+    labs(caption = "Figure 3: Weight measures for the target station at dinner when intervention was happening at dinner.") +
+  theme(strip.placement = "outside",
+        axis.title = element_blank(),
+        legend.position = "bottom")
+ggsave("self_dinner_target.png", width = 7, height = 2.75)
+```

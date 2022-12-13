@@ -1,0 +1,211 @@
+---
+title: "SCOOPS preliminary analyses"
+output:
+  html_document: 
+    highlight_downlit: yes
+    theme: cosmo
+    df_print: paged
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(glue)
+library(googlesheets4)
+library(lubridate)
+
+# gs4_auth()
+
+knitr::opts_chunk$set(message = FALSE, error = FALSE, warning = FALSE,
+                      cache = FALSE, dev.args = list(png = list(type = "cairo")))
+ds_id <- "1oL8J60p8DFpCmeb6iZRSwjAvMRt4-AhZQvkZb0qHS-c"
+```
+
+Read in data from google sheet and tidy it.
+```{r load-data}
+weight_data <- read_sheet(ds_id) |> select(condition:meal)
+deducted <- "DEDUCTED ALREADY"
+
+weight_data_prepped <- weight_data |>
+  relocate(meal, .after = monthday) |>
+  mutate(monthday = date(monthday)) |>
+  rename(date = monthday) |>
+  
+  # split up combined station and hotbox column
+  mutate(station_hotbox = str_match(station_hotbox, "^([^ ]* [^ ]*).*\\((.*)\\)"),
+         station = station_hotbox[,2], hotbox = station_hotbox[,3],
+         .after = station_hotbox) |>
+  select(-station_hotbox) |>
+  
+  # number weeks
+  mutate(week = str_remove(week, "Week ")) |>
+  
+  # replace "NA" and "?" values with NA
+  mutate(across(dish:after_notes, \(col) map(col, ~.x |> na_if("NA") |> na_if("?")))) |>
+  # mutate(before_type = map(before_type, \(bt) bt |> na_if("NA") |> na_if("?")))
+
+  # code whether weights have been deducted
+  mutate(before_deducted = !is.na(before_notes) & str_detect(before_notes, deducted),
+         .before = before_notes) |>
+  mutate(after_deducted = !is.na(after_notes) & str_detect(after_notes, deducted),
+         .before = after_notes)
+
+weight_data_tidy <- weight_data_prepped |>
+  # convert columns to correct data types
+  mutate(across(c(before_number_full, before_weight_full,
+                  after_number_full, after_number_partial, week), as.numeric)) |>
+  mutate(across(c(dish, before_type, after_type_partial), as.character)) |>
+  mutate(across(where(is.character), \(col) col |> na_if("NA"))) |>
+  
+  # parse multiple after partial tray weights
+  mutate(after_type_partial = after_type_partial |> na_if(0),
+         after_weight_partial_df = map2(after_type_partial, after_weight_partial, \(type, weight) {
+    tibble(type = unlist(str_split(type, "\\n")),
+           weight = unlist(str_split(weight, "\\n")) |> as.double())}))
+    # after_number_check = map_int(after_weight_list, length))
+
+# check that there more full trays before than after
+weight_data_tidy |> filter(before_number_full < after_number_full) |> nrow()
+
+# check that there aren't any missing necessary tray types
+weight_data_tidy |> filter(!before_deducted, before_number_full != 0, is.na(before_type)) |> nrow()
+weight_data_tidy |> filter(!after_deducted, after_number_partial != 0, is.na(after_type_partial)) |> nrow()
+
+# check that there are the same number of partial trays and number of weights of partial trays
+weight_data_tidy |>
+  filter(!is.na(after_type_partial) & after_number_partial != map_int(after_weight_partial_df, nrow)) |> nrow()
+
+# weight_data_tidy |> distinct(condition, week, day, date, meal, station) |> count(meal, station, condition)
+
+weight_data_tidy
+# write_rds(weight_data_tidy, glue("data/weights_tidy_{today()}.rds"))
+```
+
+Read and join in empty tray weights.
+```{r}
+trays <- read_sheet(ds_id, sheet = "tray weights") |> select(-description)
+
+# check that all tray types have known empty weights
+setdiff(weight_data_tidy$before_type, trays$type)
+
+weight_data_trays <- weight_data_tidy |>
+  # there's only one before tray type, so join in empty trays at rows
+  left_join(trays, by = c("before_type" = "type")) |>
+  rename(before_weight_empty = empty_weight) |>
+  relocate(before_weight_empty, .after = before_weight_full) |>
+  
+  # there can be multiple different after partial tray types, so join in empty trays for each df
+  mutate(after_weight_partial_df = map(after_weight_partial_df, \(adf) left_join(adf, trays, by = "type")))
+
+weight_data_trays
+```
+
+Calculate overall meat weights per day x meal x station.
+```{r}
+weight_data_totaled <- weight_data_trays |>
+  # treat missing weights as 0
+  mutate(across(c(before_number_full, before_weight_full, after_number_full,
+                  after_number_partial), #after_weight_partials),
+                \(clm) if_else(is.na(clm), 0, clm))) |>
+  mutate(after_weight_partial_df = map(after_weight_partial_df, \(adf) {
+    adf |> mutate(weight = if_else(is.na(weight), 0, weight),
+                  empty_weight = if_else(is.na(type), 0, empty_weight))})) |>
+  
+  # deduct before tray empty weight is not already deducted, multiply by number of trays
+  mutate(before_adjusted = if_else(before_deducted | before_weight_full == 0, before_weight_full,
+                                   before_weight_full - before_weight_empty),
+         before_total = before_number_full * before_adjusted,
+         .before = before_notes) |>
+  
+  # assume that full after trays have same weight as full before trays
+  mutate(after_full_total = after_number_full * before_adjusted,
+         # deduct after partial tray empty weights is not already deducted, sum up after partial trays
+         after_partials_total = map2_dbl(
+           after_deducted, after_weight_partial_df, \(deducted, weight_df) {
+             weight_df_adjusted <- weight_df |>
+               mutate(after_adjusted = if_else(deducted | weight == 0, weight, weight - empty_weight)) |>
+               pull(after_adjusted) |> sum()
+           }),
+         # add full total and partial total
+         after_total = after_full_total + after_partials_total)
+
+# check for missing totals
+weight_data_totaled |> filter(is.na(before_total) | is.na(after_total)) |> nrow()
+# check for missing dishes
+weight_data_totaled |> filter(is.na(dish), before_total != 0 | after_total != 0) |> nrow()
+
+# drop intermediate data/computation columns
+total_weights <- weight_data_totaled |>
+  select(condition:dish, meal, contains("total"))
+
+day_weights <- total_weights |>
+  # drop rows where there wasn't any dish at the station
+  filter(!is.na(dish)) |>
+
+  # add up weights over hotboxes
+  group_by(condition, week, day, date, meal, station, dish) |>
+  summarise(before_total = sum(before_total, na.rm = TRUE),
+            after_total = sum(after_total, na.rm = TRUE)) |>
+  ungroup() |>
+  
+  # get differences between before and after (additive and multiplicative)
+  mutate(delta = before_total - after_total,
+         delta_prop = delta / before_total) |>
+  
+  # relevel/reorder factors
+  rename(meat_type = dish) |>
+  mutate(day = day |> fct_recode("R" = "Th") |> fct_relevel("M", "T", "W", "R", "F"),
+         station = fct_recode(station, "target" = "Cardinal Sage",
+                              "non-target" = "Core Menu")) |>
+  arrange(week, day, meal, station)
+
+# sanity check that after total is less than before total
+day_weights |> filter(after_total > before_total) |> nrow()
+
+day_weights
+
+# day_weights |> write_sheet(ds_id, "day totals (auto)")
+# write_rds(day_weights, glue("data/day_weights_{today()}.rds"))
+```
+
+Separate out target vs. total data, combine with pilot data.
+```{r}
+pilot_id <- "1r3174b4XYun86Jom1v-ljM-kncL_R4HJrNFcsftyqPk"
+pilot_raw <- read_sheet(pilot_id)
+pilot_tidy <- pilot_raw |>
+  rename_with(\(cols) str_replace_all(tolower(cols), "\\s", "_")) |>
+  select(date, condition = treatment, meat_type = meat,
+         delta = quantity_of_meat_served_at_cardinal_sage_lbs) |>
+  mutate(condition = if_else(as.logical(condition), "intervention", "control"),
+         date = date(date)) |>
+  mutate(source = "pilot", meal = "lunch", station = "target",
+         week = rep(1:2, each = 5), day = rep(c("M", "T", "W", "R", "F"), 2))
+
+# card swipe data
+swipes <- read_sheet(ds_id, "card swipes")
+swipes_tidy <- swipes |>
+  pivot_longer(-date, names_to = "meal", values_to = "swipes") |>
+  mutate(date = date(date))
+
+# combine three above, tidy up
+weights_summary <- day_weights |>
+  # select(-contains("total")) |>
+  mutate(source = "study") |>
+  bind_rows(pilot_tidy) |>
+  left_join(swipes_tidy) |>
+  mutate(delta_norm = delta / swipes) |>
+  mutate(stage = case_when(source == "pilot" ~ "pilot",
+                           week <= 4 ~ "main study",
+                           TRUE ~ "self-serve"),
+         stage = fct_relevel(stage, "pilot"),
+         meat_type = str_to_lower(meat_type) |> fct_infreq(),
+         meal = fct_relevel(meal, "lunch"),
+         day = fct_inorder(day),
+         condition = factor(condition)) |>
+  arrange(date, meal, station)
+
+weights_summary
+
+# write_rds(weights_summary, glue("data/weights_summary_{today()}.rds"))
+```
