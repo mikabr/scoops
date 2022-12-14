@@ -26,6 +26,23 @@ theme_update(panel.grid = ggplot2::element_blank(),
              panel.border = ggplot2::element_blank(),
              axis.line = ggplot2::element_line(),
              strip.text = ggplot2::element_text(face = "bold"))
+
+coef_rename <- function(df) {
+  df |>
+    rename(est = estimate, se = std.error, stat = statistic, pval = p.value,
+           cil = conf.low, cih = conf.high)
+}
+
+coef_sand <- function(x) {
+  sand <- tidy(coeftest(x, vcov = vcovHC(x, type = "HC0"))) |>
+    bind_cols(coefci(x, vcov = vcovHC(x, type = "HC0"))) |>
+    rename(conf.low = `2.5 %`, conf.high = `97.5 %`) |>
+    coef_rename()
+    # rename(est = estimate, se = std.error, tval = statistic, pval = p.value,
+    #        cil = `2.5 %`, cih = `97.5 %`)
+  def <- tidy(x, conf.int = TRUE) |> coef_rename()
+  sand |> left_join(def, by = "term", suffix = c("_sand", "_def"))
+}
 ```
 
 ```{r}
@@ -51,7 +68,7 @@ study_lunch_target <- weights_summary |>
 # contrasts(study_lunch_target$stage) <- contr.sum
 
 mod_1 <- lm(delta ~ condition + stage, data = study_lunch_target)
-coef_1 <- tidy(mod_1, conf.int = TRUE)
+coef_1 <- tidy(mod_1, conf.int = TRUE) |> coef_rename()
 coef_1
 
 # 1a) same as 1 but on delta_prop (no stage because can't do prop for pilot)
@@ -62,10 +79,11 @@ coef_1
 
 # 1b) same as 1 but with delta_norm (card swipes)
 mod_1b <- lm(delta_norm ~ condition + stage, data = study_lunch_target)
-sand_1b <- coefci(mod_1b, vcov = vcovHC(mod_1b, type = "HC0"))
-coef_1b <- tidy(mod_1b, conf.int = TRUE) |>
-  rename(ci_lower_default = conf.low, ci_upper_default = conf.high) |>
-  bind_cols(sand_1b) |> rename(ci_lower = `2.5 %`, ci_upper = `97.5 %`)
+# sand_1b <- coefci(mod_1b, vcov = vcovHC(mod_1b, type = "HC0"))
+# coef_1b <- tidy(mod_1b, conf.int = TRUE) |>
+#   rename(ci_lower_default = conf.low, ci_upper_default = conf.high) |>
+#   bind_cols(sand_1b) |> rename(ci_lower = `2.5 %`, ci_upper = `97.5 %`)
+coef_1b <- coef_sand(mod_1b)
 coef_1b
 
 cells_1 <- study_lunch_target |> distinct(condition, stage) |> arrange(condition)
@@ -77,6 +95,32 @@ fits_1 <- bind_rows(
   augment(mod_1b, interval = "confidence", newdata = cells_1) |>
     mutate(measure = "delta_norm")
 )
+```
+
+```{r study_lunch_target, fig.width = 6, fig.height = 3.5}
+study_lunch_target |>
+  select(-delta_prop) |>
+  pivot_longer(contains("delta"), names_to = "measure", values_to = "value") |>
+  # mutate(measure = fct_relevel(measure, "delta", "delta_prop")) |>
+ggplot(aes(x = condition, y = value, colour = stage)) +
+  facet_wrap(vars(measure), scales = "free", strip.position = "left",
+             labeller = labeller(measure = measures)) +
+  geom_point(position = position_dodge(width = 0.35), size = 1, alpha = 0.5) +
+  # geom_text(aes(label = day, colour = stage), family = .font, size = 2,
+  #           position = position_dodge(width = 0.2)) +
+  geom_pointrange(aes(y = .fitted, ymin = .lower, ymax = .upper), data = fits_1,
+                  position = position_dodge(width = 0.2)) +
+  scale_colour_ptol(name = "") +
+  labs(caption = "Figure 1: Weight measures for the target station at lunch when intervention was happening at lunch but not at dinner.") +
+  theme(strip.placement = "outside",
+        axis.title = element_blank(),
+        legend.position = "bottom",
+        legend.key.width = unit(0.5, "lines"),
+        legend.box.spacing = unit(0, "points"),
+        plot.caption = element_text(hjust = 0, size = rel(0.7)),
+        plot.caption.position = "plot")
+
+# ggsave("plots/study_lunch_target.png", width = 6, height = 3.5)
 ```
 
 ```{r weights_slopes, eval = FALSE, fig.width = 7, fig.height = 3}
@@ -112,32 +156,6 @@ ggplot(before_after,
 # ggsave("weights_slopes.png", width = 7, height = 3)
 ```
 
-```{r study_lunch_target, fig.width = 6, fig.height = 3.5}
-study_lunch_target |>
-  select(-delta_prop) |>
-  pivot_longer(contains("delta"), names_to = "measure", values_to = "value") |>
-  # mutate(measure = fct_relevel(measure, "delta", "delta_prop")) |>
-ggplot(aes(x = condition, y = value, colour = stage)) +
-  facet_wrap(vars(measure), scales = "free", strip.position = "left",
-             labeller = labeller(measure = measures)) +
-  geom_point(position = position_dodge(width = 0.35), size = 1, alpha = 0.5) +
-  # geom_text(aes(label = day, colour = stage), family = .font, size = 2,
-  #           position = position_dodge(width = 0.2)) +
-  geom_pointrange(aes(y = .fitted, ymin = .lower, ymax = .upper), data = fits_1,
-                  position = position_dodge(width = 0.2)) +
-  scale_colour_ptol(name = "") +
-  labs(caption = "Figure 1: Weight measures for the target station at lunch when intervention was happening at lunch but not at dinner.") +
-  theme(strip.placement = "outside",
-        axis.title = element_blank(),
-        legend.position = "bottom",
-        legend.key.width = unit(0.5, "lines"),
-        legend.box.spacing = unit(0, "points"),
-        plot.caption = element_text(hjust = 0, size = rel(0.7)),
-        plot.caption.position = "plot")
-
-# ggsave("plots/study_lunch_target.png", width = 6, height = 3.5)
-```
-
 ## Dinner during main study
 
 ```{r}
@@ -152,7 +170,7 @@ study_dinner <- weights_summary |>
   ungroup()
 
 mod_2 <- lm(delta ~ condition, data = study_dinner)
-coef_2 <- tidy(mod_2, conf.int = TRUE)
+coef_2 <- tidy(mod_2, conf.int = TRUE) |> coef_rename()
 coef_2
 
 # 2a) same as 2 but on deltaprop
@@ -162,10 +180,11 @@ coef_2
 
 # 2b) same as 2 but with deltanorm (card swipes)
 mod_2b <- lm(delta_norm ~ condition, data = study_dinner)
-sand_2b <- coefci(mod_2b, vcov = vcovHC(mod_2b, type = "HC0"))
-coef_2b <- tidy(mod_2b, conf.int = TRUE) |>
-  rename(ci_lower_default = conf.low, ci_upper_default = conf.high) |>
-  bind_cols(sand_2b) |> rename(ci_lower = `2.5 %`, ci_upper = `97.5 %`)
+# sand_2b <- coefci(mod_2b, vcov = vcovHC(mod_2b, type = "HC0"))
+# coef_2b <- tidy(mod_2b, conf.int = TRUE) |>
+#   rename(ci_lower_default = conf.low, ci_upper_default = conf.high) |>
+#   bind_cols(sand_2b) |> rename(ci_lower = `2.5 %`, ci_upper = `97.5 %`)
+coef_2b <- coef_sand(mod_2b)
 coef_2b
 
 # cells_2 <- study_dinner |> distinct(condition, station)
@@ -214,7 +233,7 @@ self_dinner_target <- weights_summary |>
   filter(stage == "self-serve", station == "target")
 
 mod_3 <- lm(delta ~ condition, data = self_dinner_target)
-coef_3 <- tidy(mod_3, conf.int = TRUE)
+coef_3 <- tidy(mod_3, conf.int = TRUE) |> coef_rename()
 coef_3
 
 # mod_3a <- lm(delta_prop ~ condition, data = self_dinner_target)
@@ -222,10 +241,8 @@ coef_3
 # coef_3a <- tidy(mod_3a) |> bind_cols(sand_3a) |> rename(ci_lower = `2.5 %`, ci_upper = `97.5 %`)
 
 mod_3b <- lm(delta_norm ~ condition, data = self_dinner_target)
-sand_3b <- coefci(mod_3b, vcov = vcovHC(mod_3b, type = "HC0"))
-coef_3b <- tidy(mod_3b, conf.int = TRUE) |>
-  rename(ci_lower_default = conf.low, ci_upper_default = conf.high) |>
-  bind_cols(sand_3b) |> rename(ci_lower = `2.5 %`, ci_upper = `97.5 %`)
+# sand_3b <- coefci(mod_3b, vcov = vcovHC(mod_3b, type = "HC0"))
+coef_3b <- coef_sand(mod_3b)
 coef_3b
 
 cells_3 <- study_dinner |> distinct(condition)
