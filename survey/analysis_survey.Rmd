@@ -21,31 +21,32 @@ library(ggh4x)
 
 options(digits = 2)
 knitr::opts_chunk$set(message = FALSE, error = FALSE, warning = FALSE,
-                      rows.print = 25, dev.args = list(png = list(type = "cairo")))
+                      echo = FALSE, cache = TRUE, rows.print = 25,
+                      dev.args = list(png = list(type = "cairo")))
 .font <- "Source Sans Pro"
 theme_set(theme_bw(base_family = .font, base_size = 13))
 theme_update(panel.grid = ggplot2::element_blank(),
              strip.background = ggplot2::element_blank(),
              legend.key = ggplot2::element_blank(),
-             panel.border = ggplot2::element_blank(),
-             axis.line = ggplot2::element_line(),
+             # panel.border = ggplot2::element_blank(),
+             # axis.line = ggplot2::element_line(),
              strip.text = ggplot2::element_text(face = "bold"))
 ```
 
 ## Load and tidy data
 
 ```{r, echo=FALSE, eval=FALSE}
-read_csv(glue("private/SCOOPS_qualtrics_{today()}.csv")) |>
+read_csv("private/SCOOPS_qualtrics_2022-12-05.csv") |>
   select(-IPAddress, -email, -LocationLatitude, -LocationLongitude) |>
-  write_csv(glue("data/SCOOPS_qualtrics_sanitized_{today()}.csv"))
+  write_csv("data/SCOOPS_qualtrics_sanitized_2022-12-05.csv")
 ```
 
 ```{r}
-survey_raw <- read_csv(glue("data/SCOOPS_qualtrics_sanitized_{today()}.csv"))
+survey_raw <- read_csv("data/SCOOPS_qualtrics_sanitized_2022-12-05.csv")
 
 # code the condition of each day
 start_date <- ymd("2022-10-03")
-end_date <- ymd("2022-10-28")
+end_date <- ymd("2022-11-11")
 conditions <- tibble(date = seq(start_date, end_date, by = "days")) |>
   filter(wday(date, week_start = 1) <= 5) |>
   mutate(condition = rep(c("control", "intervention"), each = 5, length.out = n()),
@@ -87,6 +88,13 @@ day_meats <- read_csv("data/day_meats.csv") |> select(date, meat_target)
 survey <- survey_tidy |>
   left_join(day_meats, by = "date") |>
   mutate(across(where(is.character), as_factor))
+
+survey_filtered <- survey |> filter(target, in_range)
+# write_csv(survey_filtered, "data/SCOOPS_survey_filtered_2022-12-05.csv")
+
+survey_long <- survey_filtered |>
+  pivot_longer(c(satisfaction, hunger, fullness), names_to = "measure", values_to = "rating") |>
+  mutate(measure = fct_rev(measure))
 ```
 
 ## Response counts
@@ -97,10 +105,10 @@ Responses from not eating at Cardinal Sage: `r survey |> filter(!target) |> nrow
 
 Remaining responses: `r survey |> filter(target, in_range) |> nrow()`
 
-Number of responses from each day:
+Number of responses from each week/condition:
 ```{r}
-survey_filtered <- survey |> filter(target, in_range)
-survey_filtered |> count(date, condition)
+survey_filtered |> count(condition, week)
+survey_filtered |> count(condition)
 ```
 
 ## Demographic breakdown
@@ -142,16 +150,27 @@ bind_rows(
 
 Plot values by week:
 
-```{r, fig.width=10, fig.height=4.5}
-survey_long <- survey_filtered |>
-  pivot_longer(c(satisfaction, hunger, fullness), names_to = "measure", values_to = "value") |>
-  mutate(measure = fct_rev(measure))
+```{r weeks, fig.width=10, fig.height=4.5}
+ggplot(survey_long, aes(x = week, y = rating, color = condition)) +
+  facet_wrap(vars(measure)) +
+  geom_sina(aes(group = date), size = 0.6, alpha = 0.6, maxwidth = 0.6) +
+  # stat_summary(fun.data = mean_cl_boot, geom = "crossbar") +
+  stat_summary(fun = mean, geom = "crossbar") +
+  scale_x_continuous(breaks = 1:6, labels = \(b) paste("Week", b)) +
+  scale_colour_ptol() +
+  labs(y = "Response") +
+  theme(legend.position = "bottom", legend.title = element_blank(),
+        axis.title.x = element_blank())
+```
 
-ggplot(survey_long, aes(x = week, y = value, color = condition)) +
+Plot values by condition:
+
+```{r conditions, fig.height=4.5}
+ggplot(survey_long, aes(x = condition, y = rating, color = condition)) +
   facet_wrap(vars(measure)) +
   geom_sina(aes(group = date), size = 0.6, alpha = 0.6, maxwidth = 0.6) +
   stat_summary(fun = mean, geom = "crossbar") +
-  scale_x_continuous(labels = \(b) paste("Week", b)) +
+  # stat_summary(fun.data = mean_cl_boot, geom = "crossbar") +
   scale_colour_ptol() +
   labs(y = "Response") +
   theme(legend.position = "bottom", legend.title = element_blank(),
@@ -179,7 +198,7 @@ No effect of condition on meat inclusion.
 ```{r}
 # contrasts(survey_long$condition) <- contr.sum
 
-model_fun <- \(d) lm(value ~ condition, data = d)
+model_fun <- \(d) lm(rating ~ condition, data = d)
 coef_fun <- \(m) tidy(m, conf.int = TRUE) |> mutate(p.value = sprintf("%.2f", round(p.value, 2)))
 fits_fun <- \(m) augment(m, se_fit = TRUE, interval = "confidence",
                          newdata = survey_long |> distinct(condition))
@@ -189,30 +208,42 @@ survey_fits <- survey_long |>
   mutate(model = map(data, model_fun),
          coefs = map(model, coef_fun),
          fits = map(model, fits_fun))
+model_list <- set_names(survey_fits$model, survey_fits$measure)
 ```
 
 Differences by condition (condition is treatment coded):
+
+__satisfaction__:
 ```{r}
-survey_fits |> select(measure, coefs) |> unnest(coefs)
-survey_fits |> select(measure, fits) |> unnest(fits)
+summary(model_list$satisfaction)
 ```
 
-```{r, echo=FALSE}
-# hunger_fits <- survey_fits |>
-#   select(measure, fits) |>
-#   unnest(fits) |>
-#   filter(measure == "hunger")
-# hungers <- set_names(hunger_fits$.fitted, hunger_fits$condition)
-# hunger_increase <- hungers[["intervention"]] - hungers[["control"]]
-# hunger_increase <- hungers[["intervention"]] - hungers[["control"]] / hungers[["control"]]
+__hunger__:
+```{r}
+summary(model_list$hunger)
+```
+
+__fullness__:
+```{r}
+summary(model_list$fullness)
+```
+
+__coefficients__:
+```{r}
+survey_fits |> select(measure, coefs) |> unnest(coefs)
+```
+
+__fits__:
+```{r}
+survey_fits |> select(measure, fits) |> unnest(fits)
 ```
 
 No effect of condition on any of satisfaction, hunger, and fullness.
 
 Plot responses by condition with CIs from above models:
-```{r, fig.width=8, fig.height=4.5}
+```{r conditions-ci, fig.width=8, fig.height=4.5}
 fits <- survey_fits |> select(measure, fits) |> unnest(fits)
-ggplot(survey_long, aes(x = condition, y = value, color = condition)) +
+ggplot(survey_long, aes(x = condition, y = rating, color = condition)) +
   facet_wrap(vars(measure)) +
   geom_sina(aes(group = date), size = 0.6, alpha = 0.6, maxwidth = 0.6) +
   geom_crossbar(aes(y = .fitted, ymin = .lower, ymax = .upper), width = 0.8,
@@ -228,7 +259,7 @@ ggplot(survey_long, aes(x = condition, y = value, color = condition)) +
 Differences by condition and meat type (both are effects coded):
 ```{r}
 type_cells <- survey_long |> distinct(meat_target, condition)
-model_fun_type <- \(d) lm(value ~ condition * meat_target, data = d)
+model_fun_type <- \(d) lm(rating ~ condition * meat_target, data = d)
 fits_fun_type <- \(m) augment(m, se_fit = TRUE, interval = "confidence",
                               newdata = type_cells)
 
@@ -240,21 +271,44 @@ survey_fits_type <- survey_long |>
   mutate(model = map(data, model_fun_type),
          coefs = map(model, coef_fun),
          fits = map(model, fits_fun_type))
+model_list_type <- set_names(survey_fits_type$model, survey_fits_type$measure)
+```
 
+__satisfaction__:
+```{r}
+summary(model_list_type$satisfaction)
+```
+
+__hunger__:
+```{r}
+summary(model_list_type$hunger)
+```
+
+__fullness__:
+```{r}
+summary(model_list_type$fullness)
+```
+
+__coefficients__:
+```{r}
 survey_fits_type |> select(measure, coefs) |> unnest(coefs)
+```
+
+__fits__:
+```{r}
 survey_fits_type |> select(measure, fits) |> unnest(fits) |> arrange(measure, meat_target, condition)
 ```
 
-Controlled for meat type, no effect of condition on fullness.
+Controlled for meat type, no effect of condition on any of satisfaction, hunger, and fullness.
 
-Possible effect of condition on hunger (higher hunger in intervention). Not significantly different between meat types.
-
-Possible effect of condition and meat type on satisfaction (satisfaction is higher in intervention for pork and beef but lower for chicken).
-
-```{r, fig.width=10, fig.height=4.5}
+```{r meat-type, fig.width=10, fig.height=9}
+nester <- element_line(colour = "grey20", size = 0.4)
+resecter <- unit(12, "points")
 fits_type <- survey_fits_type |> select(measure, fits) |> unnest(fits)
-ggplot(survey_long, aes(x = condition, y = value, color = condition)) +
-  facet_nested(~ measure + meat_target) +
+
+ggplot(survey_long, aes(x = condition, y = rating, color = condition)) +
+  facet_nested_wrap(vars(measure, meat_target), ncol = 6,
+                    nest_line = nester, resect = resecter) +
   # facet_wrap(vars(measure, meat_target), nrow = 1) +
   geom_sina(aes(group = date), size = 0.6, alpha = 0.6, maxwidth = 0.6) +
   geom_crossbar(aes(y = .fitted, ymin = .lower, ymax = .upper), width = 0.8,
@@ -265,9 +319,9 @@ ggplot(survey_long, aes(x = condition, y = value, color = condition)) +
         axis.title.x = element_blank())
 ```
 
-### By condition, meat type, and meat inclusion
+### By condition and meat inclusion
 
-Differences by condition and meat type (both are effects coded), split up by whether meat was included.
+<!-- Differences by condition and meat type (both are effects coded), split up by whether meat was included. -->
 ```{r}
 # contrasts(survey_long$condition) <- contr.treatment
 survey_fits_meat <- survey_long |>
@@ -281,17 +335,24 @@ survey_fits_meat <- survey_long |>
 ```
 
 Differences by condition, split by whether meat was included:
+
+__coefficients__:
 ```{r}
 survey_fits_meat |>
   select(measure, meat_inclusion, coefs) |>
   unnest(coefs)
+```
 
+__fits__:
+```{r}
 survey_fits_meat |>
   select(measure, meat_inclusion, fits) |>
   unnest(fits)
 ```
 
 No effects for satisfaction or fullness for both groups.
+
+Might be an effect for hunger when including meat?
 
 ```{r, echo=FALSE}
 hunger_fits_meat <- survey_fits_meat |>
@@ -303,39 +364,137 @@ hunger_increase_meat <- hungers_meat[["intervention"]] - hungers_meat[["control"
 # hunger_increase_meat <- hungers_meat[["intervention"]] - hungers_meat[["control"]] / hungers_meat[["control"]]
 ```
 
-Hunger effect is coming from respondents who did not eat meat, they report `r hunger_increase_meat` scale points higher hunger in intervention that in control.
-
-Differences by condition and meat type, split by whether meat was included:
+__hunger measure when meat was included__:
 ```{r}
-survey_fits_meat |>
-  select(measure, meat_inclusion, coefs_type) |>
-  unnest(coefs_type)
-
-survey_fits_meat |>
-  select(measure, meat_inclusion, fits_type) |>
-  unnest(fits_type)
+survey_fits_meat |> filter(meat_inclusion, measure == "hunger") |> pull(model) |> pluck(1) |> summary()
 ```
 
-Satisfaction interaction no longer present when split by meat inclusion.
+Respondents who ate meat responded `r hunger_increase_meat` scale points higher in intervention that in control.
 
-Hunger effect from respondents who did not eat meat is still present controlled for meat type, no significant differences in it by meat type.
-
-Plot responses by condition and meat inclusion with CIs from above models:
-```{r, fig.width=10, fig.height=8}
-fits_meat <- survey_fits_meat |> select(measure, meat_inclusion, fits_type) |>
-  unnest(fits_type) |>
-  mutate(meat_inclusion = if_else(meat_inclusion, "yes meat", "no meat"))
+```{r meat-inclusion, fig.width=10, fig.height=4.5}
+fits_meat <- survey_fits_meat |> select(measure, meat_inclusion, fits) |>
+  unnest(fits) |>
+  mutate(meat_inclusion = if_else(meat_inclusion, "ate meat", "did not eat meat"))
 survey_long <- survey_long |>
-  mutate(meat_inclusion = if_else(meat_inclusion, "yes meat", "no meat"))
+  mutate(meat_inclusion = if_else(meat_inclusion, "ate meat", "did not eat meat"))
 
-ggplot(survey_long, aes(x = condition, y = value, color = condition)) +
-  facet_nested(meat_inclusion ~ measure + meat_target) +
-  geom_sina(aes(group = date), size = 0.6, alpha = 0.6, maxwidth = 0.6) +
+ggplot(survey_long, aes(x = condition, y = rating, color = condition)) +
+  facet_nested_wrap(c(vars(measure), vars(meat_inclusion)), nrow = 1,
+                    nest_line = nester, resect = resecter) +
+  geom_sina(aes(group = date), size = 0.6, alpha = 0.6, maxwidth = 0.5) +
   geom_crossbar(aes(y = .fitted, ymin = .lower, ymax = .upper), width = 0.8,
-                position = position_dodge(),
+                # position = position_dodge(),
                 data = fits_meat) +
-  scale_colour_ptol() +
+  scale_colour_ptol(guide = "none") +
   labs(y = "Response") +
-  theme(legend.position = "bottom", legend.title = element_blank(),
-        axis.title.x = element_blank())
+  theme(axis.title.x = element_blank())
+# ggsave("plots/survey_conditions.png", width = 10, height = 4.5)
+```
+
+<!-- Differences by condition and meat type, split by whether meat was included: -->
+```{r}
+# survey_fits_meat |>
+#   select(measure, meat_inclusion, coefs_type) |>
+#   unnest(coefs_type)
+# 
+# survey_fits_meat |>
+#   select(measure, meat_inclusion, fits_type) |>
+#   unnest(fits_type)
+```
+
+<!-- Plot responses by condition and meat inclusion with CIs from above models: -->
+```{r, fig.width=10, fig.height=8}
+# fits_meat <- survey_fits_meat |> select(measure, meat_inclusion, fits_type) |>
+#   unnest(fits_type) |>
+#   mutate(meat_inclusion = if_else(meat_inclusion, "yes meat", "no meat"))
+# survey_long <- survey_long |>
+#   mutate(meat_inclusion = if_else(meat_inclusion, "yes meat", "no meat"))
+# 
+# ggplot(survey_long, aes(x = condition, y = rating, color = condition)) +
+#   facet_nested(meat_inclusion ~ measure + meat_target) +
+#   geom_sina(aes(group = date), size = 0.6, alpha = 0.6, maxwidth = 0.6) +
+#   geom_crossbar(aes(y = .fitted, ymin = .lower, ymax = .upper), width = 0.8,
+#                 position = position_dodge(),
+#                 data = fits_meat) +
+#   scale_colour_ptol() +
+#   labs(y = "Response") +
+#   theme(legend.position = "bottom", legend.title = element_blank(),
+#         axis.title.x = element_blank())
+```
+
+## Exploratory stuff
+
+__demographic covariates__
+
+```{r demographic, fig.width=10}
+demo_long <- survey_long |>
+  # filter(!str_detect(gender, "Prefer not")) |>
+  mutate(meat_freq = fct_relevel(meat_freq, "0", "1-7", "8-14", "15-21", "22+"),
+         fish_freq = fct_relevel(meat_freq, "0", "1-7", "8-14", "15-21", "22+"),
+         diet = fct_relevel(diet, "Meat", "Flexitarian", "Pescatarian", "Vegetarian", "Vegan"),
+         gender = fct_lump_n(gender, 2),
+         meat_freq = fct_collapse(meat_freq, "15+" = c("15-21", "22+")),
+         fish_freq = fct_collapse(fish_freq, "15+" = c("15-21", "22+")),
+         diet = fct_collapse(diet, "Pescatarian/Vegetarian/Vegan" = c("Pescatarian", "Vegetarian", "Vegan"))) |>
+         # meat_freq = fct_lump_prop(meat_freq, 0.01)) |>
+         # diet = fct_lump_prop()) |>
+         # gender = fct_collapse(gender, "Non-binary/Other" = c("Non-binary", "Other")) |> fct_infreq()) |>
+  pivot_longer(c(meat_freq, fish_freq, diet, gender), names_to = "demo", values_to = "demo_value") |>
+  mutate(demo = fct_relevel(demo, "gender"))
+  
+demo_long |> count(measure, demo, demo_value) |> filter(measure == "satisfaction")
+ggplot(demo_long |> filter(measure == "satisfaction"),
+       aes(x = demo_value, y = rating, colour = condition)) +
+  # facet_grid(vars(measure), vars(demo), scales = "free", space = "free") +
+  # facet_grid(rows = vars(demo), scales = "free", space = "free") +
+  facet_wrap(vars(demo), nrow = 1, scales = "free_x") +
+  # geom_point()
+  # geom_sina(aes(group = condition)) +
+  stat_summary(fun.data = mean_cl_normal, position = position_dodge(width = 0.4)) +
+  # stat_summary(geom = "text", fun = length) +
+  scale_colour_ptol(name = "") +
+  scale_y_continuous(breaks = seq(0, 100, 10), name = "Hunger rating") +
+  theme(axis.title.x = element_blank(),
+        legend.position = "bottom")
+```
+
+```{r, eval = FALSE}
+contrasts(survey_long$diet) <- contr.sum
+contrasts(survey_long$meat_freq) <- contr.sum
+contrasts(survey_long$fish_freq) <- contr.sum
+contrasts(survey_long$stanford_status) <- contr.sum
+contrasts(survey_long$gender) <- contr.sum
+contrasts(survey_long$race) <- contr.sum
+
+sat <- survey_long |> filter(measure == "satisfaction")
+  # mutate(meat_inclusion = factor(meat_inclusion))
+# contrasts(sat$meat_inclusion) <- contr.sum
+
+lm(rating ~ condition + diet, data = sat) |> summary()
+lm(rating ~ condition * diet, data = sat) |> summary()
+lm(rating ~ condition + meat_freq, data = sat) |> summary()
+lm(rating ~ condition + fish_freq, data = sat) |> summary()
+lm(rating ~ condition + stanford_status, data = sat) |> summary()
+lm(rating ~ condition + gender, data = sat) |> summary()
+lm(rating ~ condition + race, data = sat) |> summary()
+```
+
+__temporal trends__
+
+```{r temporal, fig.width=10}
+ggplot(survey_long, aes(x = date, y = rating)) +
+  facet_wrap(vars(measure)) +
+  geom_point() +
+  # geom_sina(aes(group = date))
+  geom_smooth(method = "lm")
+```
+
+__day effects__
+
+```{r wday, fig.width=10}
+ggplot(survey_long, aes(x = wday(date), y = rating)) +
+  facet_wrap(vars(measure)) +
+  # geom_point() +
+  geom_sina(aes(group = wday(date))) +
+  geom_smooth(method = "lm")
 ```

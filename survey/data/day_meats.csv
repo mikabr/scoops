@@ -18,3 +18,13 @@ week type,day,date,meat_target
 3,W,2022-10-26,pork
 3,R,2022-10-27,chicken
 3,F,2022-10-28,chicken
+1,M,2022-10-31,chicken
+1,T,2022-11-01,pork
+1,W,2022-11-02,beef
+1,R,2022-11-03,chicken
+1,F,2022-11-04,chicken
+,M,2022-11-07,pork
+,T,2022-11-08,pork
+,W,2022-11-09,beef
+,R,2022-11-10,pork
+,F,2022-11-11,pork

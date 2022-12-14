@@ -1,0 +1,408 @@
+condition,week,recorded,date,day,hour,target,satisfaction,hunger,fullness,meat_inclusion,meat_freq,fish_freq,diet,stanford_status,gender,race,in_range,id,meat_target
+control,1,2022-10-03T13:10:50Z,2022-10-03,Mon,13,TRUE,100,21,82,TRUE,1-7,NA,Meat,Junior,Female,Asian or Pacific Islander,TRUE,12,chicken
+control,1,2022-10-03T13:11:27Z,2022-10-03,Mon,13,TRUE,100,17,83,TRUE,1-7,NA,Meat,Junior,Female,Asian or Pacific Islander,TRUE,13,chicken
+control,1,2022-10-03T13:55:21Z,2022-10-03,Mon,13,TRUE,100,0,100,TRUE,15-21,NA,Meat,Sophomore,Male,"Asian or Pacific Islander,White or Caucasian",TRUE,14,chicken
+control,1,2022-10-03T13:55:39Z,2022-10-03,Mon,13,TRUE,95,25,90,TRUE,8-14,NA,Meat,Sophomore,Male,White or Caucasian,TRUE,15,chicken
+control,1,2022-10-03T14:35:12Z,2022-10-03,Mon,14,TRUE,70,0,72,TRUE,8-14,NA,Meat,Sophomore,Female,Hispanic or Latino,TRUE,16,chicken
+control,1,2022-10-03T15:18:15Z,2022-10-03,Mon,15,TRUE,90,0,100,TRUE,8-14,1-7,Meat,Sophomore,Male,Asian or Pacific Islander,TRUE,17,chicken
+control,1,2022-10-03T15:29:09Z,2022-10-03,Mon,15,TRUE,96,6,87,TRUE,1-7,1-7,Meat,Sophomore,Female,Hispanic or Latino,TRUE,18,chicken
+control,1,2022-10-03T15:36:11Z,2022-10-03,Mon,15,TRUE,97,3,100,TRUE,1-7,1-7,Meat,Freshman,Female,Asian or Pacific Islander,TRUE,19,chicken
+control,1,2022-10-03T15:36:19Z,2022-10-03,Mon,15,TRUE,100,50,100,TRUE,1-7,1-7,Meat,Sophomore,Female,Asian or Pacific Islander,TRUE,20,chicken
+control,1,2022-10-03T15:37:59Z,2022-10-03,Mon,15,TRUE,73,0,100,TRUE,8-14,1-7,Meat,Sophomore,Non-binary,Asian or Pacific Islander,TRUE,21,chicken
+control,1,2022-10-03T15:54:08Z,2022-10-03,Mon,15,TRUE,65,7,87,FALSE,0,0,Vegetarian,Junior,Male,Asian or Pacific Islander,TRUE,27,chicken
+control,1,2022-10-03T15:57:42Z,2022-10-03,Mon,15,TRUE,94,19,77,FALSE,0,0,Vegan,Sophomore,Female,White or Caucasian,TRUE,28,chicken
+control,1,2022-10-03T16:46:46Z,2022-10-03,Mon,16,TRUE,100,0,100,TRUE,8-14,1-7,Meat,Freshman,Female,White or Caucasian,TRUE,29,chicken
+control,1,2022-10-04T12:18:17Z,2022-10-04,Tue,12,TRUE,31,36,77,FALSE,0,0,Vegan,Freshman,Male,Asian or Pacific Islander,TRUE,30,beef
+control,1,2022-10-04T14:03:47Z,2022-10-04,Tue,14,TRUE,100,17,93,TRUE,1-7,1-7,Meat,Senior,Female,Hispanic or Latino,TRUE,31,beef
+control,1,2022-10-04T14:20:44Z,2022-10-04,Tue,14,TRUE,100,67,45,FALSE,1-7,1-7,Flexitarian,Senior,Female,White or Caucasian,TRUE,32,beef
+control,1,2022-10-04T14:26:07Z,2022-10-04,Tue,14,TRUE,98,4,91,TRUE,8-14,0,Meat,Senior,Female,"Native American or Alaskan Native,White or Caucasian",TRUE,33,beef
+control,1,2022-10-04T14:28:28Z,2022-10-04,Tue,14,TRUE,50,51,50,TRUE,8-14,1-7,Meat,Graduate student,Prefer not to answer,Prefer not to answer,TRUE,34,beef
+control,1,2022-10-04T14:31:37Z,2022-10-04,Tue,14,TRUE,100,0,100,TRUE,8-14,1-7,Meat,Junior,Female,Asian or Pacific Islander,TRUE,35,beef
+control,1,2022-10-04T14:32:55Z,2022-10-04,Tue,14,TRUE,100,31,88,TRUE,8-14,1-7,Meat,Freshman,Female,"Black or African American,Hispanic or Latino",TRUE,36,beef
+control,1,2022-10-04T14:33:33Z,2022-10-04,Tue,14,TRUE,86,0,78,TRUE,8-14,8-14,Meat,Sophomore,Male,White or Caucasian,TRUE,37,beef
+control,1,2022-10-04T14:34:26Z,2022-10-04,Tue,14,TRUE,71,0,100,TRUE,8-14,1-7,Meat,Senior,Female,Asian or Pacific Islander,TRUE,38,beef
+control,1,2022-10-04T14:35:26Z,2022-10-04,Tue,14,TRUE,38,18,76,FALSE,0,0,Vegan,Junior,Female,White or Caucasian,TRUE,39,beef
+control,1,2022-10-04T14:37:55Z,2022-10-04,Tue,14,TRUE,100,0,100,TRUE,15-21,1-7,Meat,Junior,Male,"Asian or Pacific Islander,White or Caucasian",TRUE,40,beef
+control,1,2022-10-04T14:40:59Z,2022-10-04,Tue,14,TRUE,90,70,98,TRUE,8-14,0,Meat,Sophomore,Male,Hispanic or Latino,TRUE,41,beef
+control,1,2022-10-04T14:42:23Z,2022-10-04,Tue,14,TRUE,38,13,80,TRUE,1-7,0,Meat,Sophomore,Female,"Asian or Pacific Islander,White or Caucasian",TRUE,42,beef
+control,1,2022-10-04T14:42:58Z,2022-10-04,Tue,14,TRUE,86,0,100,TRUE,1-7,1-7,Meat,Sophomore,Male,Hispanic or Latino,TRUE,43,beef
+control,1,2022-10-04T14:47:44Z,2022-10-04,Tue,14,TRUE,90,0,94,TRUE,1-7,1-7,Meat,Sophomore,Female,Asian or Pacific Islander,TRUE,44,beef
+control,1,2022-10-04T14:47:58Z,2022-10-04,Tue,14,TRUE,100,25,88,FALSE,1-7,0,Meat,Sophomore,Female,Asian or Pacific Islander,TRUE,45,beef
+control,1,2022-10-04T14:48:29Z,2022-10-04,Tue,14,TRUE,87,68,92,FALSE,0,0,Vegetarian,Sophomore,Male,A race/ethnicity not listed here,TRUE,46,beef
+control,1,2022-10-04T14:49:12Z,2022-10-04,Tue,14,TRUE,86,7,83,TRUE,8-14,1-7,Meat,Junior,Female,Asian or Pacific Islander,TRUE,47,beef
+control,1,2022-10-04T14:59:18Z,2022-10-04,Tue,14,TRUE,84,28,74,TRUE,1-7,8-14,Flexitarian,Graduate student,Male,White or Caucasian,TRUE,48,beef
+control,1,2022-10-04T15:00:05Z,2022-10-04,Tue,15,TRUE,74,19,74,FALSE,8-14,1-7,Flexitarian,Freshman,Female,Hispanic or Latino,TRUE,49,beef
+control,1,2022-10-04T15:01:06Z,2022-10-04,Tue,15,TRUE,50,69,50,FALSE,8-14,1-7,Meat,Freshman,Female,Asian or Pacific Islander,TRUE,50,beef
+control,1,2022-10-04T15:06:23Z,2022-10-04,Tue,15,TRUE,100,64,83,FALSE,8-14,0,Flexitarian,Sophomore,Female,Asian or Pacific Islander,TRUE,51,beef
+control,1,2022-10-04T15:08:04Z,2022-10-04,Tue,15,TRUE,76,2,86,FALSE,8-14,1-7,Flexitarian,Freshman,Male,White or Caucasian,TRUE,52,beef
+control,1,2022-10-04T15:14:23Z,2022-10-04,Tue,15,TRUE,73,7,95,TRUE,8-14,1-7,Meat,Freshman,Female,Asian or Pacific Islander,TRUE,53,beef
+control,1,2022-10-04T15:15:51Z,2022-10-04,Tue,15,TRUE,89,37,68,TRUE,1-7,1-7,Meat,Graduate student,Male,White or Caucasian,TRUE,54,beef
+control,1,2022-10-04T15:21:33Z,2022-10-04,Tue,15,TRUE,84,26,37,FALSE,0,1-7,Flexitarian,Junior,Female,Hispanic or Latino,TRUE,55,beef
+control,1,2022-10-04T15:21:41Z,2022-10-04,Tue,15,TRUE,100,0,100,FALSE,0,0,Vegan,Junior,Female,White or Caucasian,TRUE,56,beef
+control,1,2022-10-04T15:24:59Z,2022-10-04,Tue,15,TRUE,92,0,100,TRUE,1-7,0,Meat,Other,Female,White or Caucasian,TRUE,57,beef
+control,1,2022-10-04T15:29:03Z,2022-10-04,Tue,15,TRUE,58,51,51,TRUE,8-14,0,Meat,Sophomore,Male,"Native American or Alaskan Native,White or Caucasian",TRUE,58,beef
+control,1,2022-10-04T15:29:21Z,2022-10-04,Tue,15,TRUE,84,0,81,TRUE,1-7,0,Flexitarian,Senior,Non-binary,White or Caucasian,TRUE,59,beef
+control,1,2022-10-04T15:31:30Z,2022-10-04,Tue,15,TRUE,97,0,95,FALSE,0,0,Vegetarian,Sophomore,Female,White or Caucasian,TRUE,60,beef
+control,1,2022-10-04T15:33:21Z,2022-10-04,Tue,15,TRUE,100,0,100,TRUE,8-14,0,Meat,Sophomore,Female,Hispanic or Latino,TRUE,61,beef
+control,1,2022-10-04T15:35:54Z,2022-10-04,Tue,15,TRUE,100,31,56,FALSE,1-7,0,Flexitarian,Sophomore,Female,Asian or Pacific Islander,TRUE,62,beef
+control,1,2022-10-04T15:36:05Z,2022-10-04,Tue,15,TRUE,86,4,93,FALSE,8-14,1-7,Meat,Junior,Female,"Hispanic or Latino,White or Caucasian",TRUE,63,beef
+control,1,2022-10-04T15:38:17Z,2022-10-04,Tue,15,TRUE,90,10,86,FALSE,1-7,1-7,Flexitarian,Sophomore,Female,White or Caucasian,TRUE,65,beef
+control,1,2022-10-04T15:38:19Z,2022-10-04,Tue,15,TRUE,72,15,76,FALSE,1-7,1-7,Pescatarian,Sophomore,Female,Hispanic or Latino,TRUE,66,beef
+control,1,2022-10-04T15:38:59Z,2022-10-04,Tue,15,TRUE,68,76,94,TRUE,8-14,1-7,Meat,Freshman,Female,Asian or Pacific Islander,TRUE,67,beef
+control,1,2022-10-04T15:46:38Z,2022-10-04,Tue,15,TRUE,88,31,62,TRUE,1-7,1-7,Meat,Sophomore,Female,White or Caucasian,TRUE,68,beef
+control,1,2022-10-04T15:54:02Z,2022-10-04,Tue,15,TRUE,100,15,97,TRUE,8-14,1-7,Meat,Sophomore,Male,Hispanic or Latino,TRUE,69,beef
+control,1,2022-10-04T15:54:06Z,2022-10-04,Tue,15,TRUE,100,0,100,TRUE,15-21,1-7,Meat,Sophomore,Female,Asian or Pacific Islander,TRUE,70,beef
+control,1,2022-10-04T15:57:54Z,2022-10-04,Tue,15,TRUE,0,41,64,FALSE,0,1-7,Pescatarian,Graduate student,Female,Asian or Pacific Islander,TRUE,71,beef
+control,1,2022-10-04T15:58:06Z,2022-10-04,Tue,15,TRUE,0,57,41,TRUE,15-21,8-14,Meat,Senior,Male,Asian or Pacific Islander,TRUE,72,beef
+control,1,2022-10-04T15:58:19Z,2022-10-04,Tue,15,TRUE,82,16,81,TRUE,8-14,1-7,Meat,Freshman,Female,Asian or Pacific Islander,TRUE,73,beef
+control,1,2022-10-04T15:59:28Z,2022-10-04,Tue,15,TRUE,84,33,64,TRUE,8-14,1-7,Meat,Freshman,Male,Asian or Pacific Islander,TRUE,74,beef
+control,1,2022-10-04T16:02:03Z,2022-10-04,Tue,16,TRUE,83,0,100,TRUE,8-14,1-7,Meat,Freshman,Male,Asian or Pacific Islander,TRUE,75,beef
+control,1,2022-10-04T16:05:11Z,2022-10-04,Tue,16,TRUE,100,0,100,TRUE,1-7,1-7,Meat,Senior,Female,Asian or Pacific Islander,TRUE,76,beef
+control,1,2022-10-04T16:12:44Z,2022-10-04,Tue,16,TRUE,100,0,100,FALSE,0,0,Vegetarian,Junior,Female,Asian or Pacific Islander,TRUE,77,beef
+control,1,2022-10-04T16:13:22Z,2022-10-04,Tue,16,TRUE,100,0,83,TRUE,1-7,1-7,Meat,Junior,Female,Asian or Pacific Islander,TRUE,78,beef
+control,1,2022-10-04T16:19:59Z,2022-10-04,Tue,16,TRUE,71,68,72,TRUE,15-21,1-7,Meat,Sophomore,Male,Asian or Pacific Islander,TRUE,79,beef
+control,1,2022-10-04T16:25:21Z,2022-10-04,Tue,16,TRUE,33,31,74,FALSE,0,0,Vegetarian,Sophomore,Male,Asian or Pacific Islander,TRUE,80,beef
+control,1,2022-10-04T16:25:52Z,2022-10-04,Tue,16,TRUE,54,26,74,TRUE,8-14,1-7,Meat,Sophomore,Male,Asian or Pacific Islander,TRUE,81,beef
+control,1,2022-10-04T16:29:22Z,2022-10-04,Tue,16,TRUE,83,10,90,TRUE,15-21,0,Meat,Sophomore,Male,Asian or Pacific Islander,TRUE,82,beef
+control,1,2022-10-04T16:51:46Z,2022-10-04,Tue,16,TRUE,84,0,100,FALSE,0,0,Vegetarian,Sophomore,Female,White or Caucasian,TRUE,85,beef
+control,1,2022-10-05T14:09:05Z,2022-10-05,Wed,14,TRUE,86,40,57,FALSE,0,0,Vegetarian,Freshman,Male,Asian or Pacific Islander,TRUE,103,pork
+control,1,2022-10-05T14:09:19Z,2022-10-05,Wed,14,TRUE,77,0,83,TRUE,15-21,1-7,Flexitarian,Sophomore,Female,Asian or Pacific Islander,TRUE,104,pork
+control,1,2022-10-05T14:32:13Z,2022-10-05,Wed,14,TRUE,75,16,69,TRUE,8-14,8-14,Meat,Sophomore,Male,Asian or Pacific Islander,TRUE,105,pork
+control,1,2022-10-05T14:33:07Z,2022-10-05,Wed,14,TRUE,62,62,61,FALSE,0,0,Vegetarian,Graduate student,Male,Asian or Pacific Islander,TRUE,106,pork
+control,1,2022-10-05T14:37:59Z,2022-10-05,Wed,14,TRUE,63,0,100,FALSE,0,0,Vegetarian,Junior,Non-binary,Asian or Pacific Islander,TRUE,107,pork
+control,1,2022-10-05T14:38:43Z,2022-10-05,Wed,14,TRUE,71,5,100,FALSE,1-7,1-7,Flexitarian,Junior,Male,Asian or Pacific Islander,TRUE,108,pork
+control,1,2022-10-05T14:40:11Z,2022-10-05,Wed,14,TRUE,87,21,73,TRUE,1-7,1-7,Meat,Freshman,Male,"Asian or Pacific Islander,White or Caucasian",TRUE,109,pork
+control,1,2022-10-05T14:40:41Z,2022-10-05,Wed,14,TRUE,100,18,82,TRUE,8-14,0,Meat,Freshman,Female,White or Caucasian,TRUE,110,pork
+control,1,2022-10-05T14:43:07Z,2022-10-05,Wed,14,TRUE,72,0,89,TRUE,1-7,1-7,Flexitarian,Senior,Female,White or Caucasian,TRUE,111,pork
+control,1,2022-10-05T14:43:11Z,2022-10-05,Wed,14,TRUE,90,30,75,TRUE,15-21,1-7,Meat,Freshman,Male,White or Caucasian,TRUE,112,pork
+control,1,2022-10-05T14:43:58Z,2022-10-05,Wed,14,TRUE,83,7,94,TRUE,1-7,1-7,Flexitarian,Sophomore,Female,Asian or Pacific Islander,TRUE,113,pork
+control,1,2022-10-05T14:55:59Z,2022-10-05,Wed,14,TRUE,83,77,85,TRUE,1-7,0,Flexitarian,Freshman,Female,Hispanic or Latino,TRUE,114,pork
+control,1,2022-10-05T14:57:19Z,2022-10-05,Wed,14,TRUE,91,32,100,TRUE,1-7,1-7,Meat,Freshman,Female,Asian or Pacific Islander,TRUE,115,pork
+control,1,2022-10-05T14:57:28Z,2022-10-05,Wed,14,TRUE,100,18,82,TRUE,8-14,1-7,Meat,Freshman,Male,Asian or Pacific Islander,TRUE,116,pork
+control,1,2022-10-05T14:58:28Z,2022-10-05,Wed,14,TRUE,91,0,83,FALSE,0,0,Flexitarian,Junior,Female,White or Caucasian,TRUE,117,pork
+control,1,2022-10-05T14:58:37Z,2022-10-05,Wed,14,TRUE,100,83,100,FALSE,0,0,Vegetarian,Freshman,Female,"Hispanic or Latino,White or Caucasian",TRUE,118,pork
+control,1,2022-10-05T14:58:39Z,2022-10-05,Wed,14,TRUE,82,26,86,FALSE,0,0,Vegetarian,Junior,Female,Asian or Pacific Islander,TRUE,119,pork
+control,1,2022-10-05T14:59:16Z,2022-10-05,Wed,14,TRUE,95,63,72,FALSE,0,0,Vegan,Freshman,Female,"Asian or Pacific Islander,White or Caucasian",TRUE,120,pork
+control,1,2022-10-05T14:59:51Z,2022-10-05,Wed,14,TRUE,100,81,100,FALSE,0,0,Vegetarian,Freshman,Female,"Hispanic or Latino,White or Caucasian",TRUE,121,pork
+control,1,2022-10-05T15:00:46Z,2022-10-05,Wed,15,TRUE,91,27,72,FALSE,0,0,Vegan,Freshman,Female,"Asian or Pacific Islander,White or Caucasian",TRUE,122,pork
+control,1,2022-10-05T15:04:19Z,2022-10-05,Wed,15,TRUE,73,66,40,TRUE,8-14,8-14,Meat,Freshman,Male,"Hispanic or Latino,White or Caucasian",TRUE,123,pork
+control,1,2022-10-05T15:08:32Z,2022-10-05,Wed,15,TRUE,83,6,81,TRUE,8-14,1-7,Meat,Graduate student,Male,Black or African American,TRUE,124,pork
+control,1,2022-10-05T15:10:38Z,2022-10-05,Wed,15,TRUE,76,2,98,TRUE,15-21,1-7,Meat,Graduate student,Male,Black or African American,TRUE,125,pork
+control,1,2022-10-05T15:17:40Z,2022-10-05,Wed,15,TRUE,100,0,100,TRUE,15-21,1-7,Meat,Junior,Male,"Asian or Pacific Islander,White or Caucasian",TRUE,126,pork
+control,1,2022-10-05T15:24:27Z,2022-10-05,Wed,15,TRUE,78,24,87,TRUE,1-7,15-21,Meat,Freshman,Female,Asian or Pacific Islander,TRUE,127,pork
+control,1,2022-10-05T15:25:46Z,2022-10-05,Wed,15,TRUE,100,7,63,TRUE,8-14,1-7,Meat,Freshman,Female,Hispanic or Latino,TRUE,128,pork
+control,1,2022-10-05T15:27:33Z,2022-10-05,Wed,15,TRUE,78,81,76,TRUE,22+,22+,Meat,Freshman,Male,A race/ethnicity not listed here,TRUE,129,pork
+control,1,2022-10-05T15:27:48Z,2022-10-05,Wed,15,TRUE,100,6,81,TRUE,8-14,0,Meat,Freshman,Female,White or Caucasian,TRUE,130,pork
+control,1,2022-10-05T15:29:29Z,2022-10-05,Wed,15,TRUE,82,8,100,FALSE,0,0,Vegetarian,Freshman,Female,Asian or Pacific Islander,TRUE,131,pork
+control,1,2022-10-05T15:30:20Z,2022-10-05,Wed,15,TRUE,64,21,71,FALSE,8-14,0,Flexitarian,Senior,Female,Prefer not to answer,TRUE,132,pork
+control,1,2022-10-05T15:33:19Z,2022-10-05,Wed,15,TRUE,100,0,92,FALSE,1-7,0,Flexitarian,Junior,Female,Asian or Pacific Islander,TRUE,134,pork
+control,1,2022-10-05T15:33:29Z,2022-10-05,Wed,15,TRUE,82,83,83,TRUE,8-14,0,Meat,Freshman,Female,Hispanic or Latino,TRUE,135,pork
+control,1,2022-10-05T15:45:51Z,2022-10-05,Wed,15,TRUE,61,0,82,FALSE,0,0,Vegetarian,Freshman,Female,"Black or African American,White or Caucasian",TRUE,136,pork
+control,1,2022-10-05T15:47:55Z,2022-10-05,Wed,15,TRUE,98,75,83,TRUE,8-14,1-7,Meat,Junior,Male,Asian or Pacific Islander,TRUE,137,pork
+control,1,2022-10-05T15:49:21Z,2022-10-05,Wed,15,TRUE,71,17,76,TRUE,15-21,1-7,Meat,Junior,Male,Black or African American,TRUE,138,pork
+control,1,2022-10-05T15:49:57Z,2022-10-05,Wed,15,TRUE,100,33,62,FALSE,1-7,0,Flexitarian,Sophomore,Female,Asian or Pacific Islander,TRUE,139,pork
+control,1,2022-10-05T15:50:28Z,2022-10-05,Wed,15,TRUE,85,25,74,TRUE,8-14,1-7,Meat,Freshman,Male,Hispanic or Latino,TRUE,140,pork
+control,1,2022-10-05T15:50:39Z,2022-10-05,Wed,15,TRUE,79,75,29,TRUE,1-7,1-7,Meat,Sophomore,Female,Asian or Pacific Islander,TRUE,141,pork
+control,1,2022-10-05T15:58:15Z,2022-10-05,Wed,15,TRUE,100,67,25,TRUE,15-21,1-7,Meat,Sophomore,Male,Asian or Pacific Islander,TRUE,142,pork
+control,1,2022-10-05T15:58:27Z,2022-10-05,Wed,15,TRUE,100,0,78,TRUE,8-14,1-7,Meat,Sophomore,Female,"Native American or Alaskan Native,White or Caucasian",TRUE,143,pork
+control,1,2022-10-05T15:59:05Z,2022-10-05,Wed,15,TRUE,61,19,85,TRUE,8-14,1-7,Meat,Graduate student,Male,Asian or Pacific Islander,TRUE,144,pork
+control,1,2022-10-05T16:01:58Z,2022-10-05,Wed,16,TRUE,89,0,100,TRUE,8-14,0,Meat,Freshman,Female,Hispanic or Latino,TRUE,145,pork
+control,1,2022-10-05T16:03:41Z,2022-10-05,Wed,16,TRUE,65,73,77,TRUE,1-7,1-7,Meat,Graduate student,Female,Asian or Pacific Islander,TRUE,146,pork
+control,1,2022-10-05T16:05:11Z,2022-10-05,Wed,16,TRUE,39,0,78,TRUE,1-7,1-7,Meat,Sophomore,Male,Asian or Pacific Islander,TRUE,147,pork
+control,1,2022-10-05T16:06:11Z,2022-10-05,Wed,16,TRUE,71,0,81,TRUE,1-7,1-7,Meat,Sophomore,Female,Asian or Pacific Islander,TRUE,148,pork
+control,1,2022-10-05T16:06:47Z,2022-10-05,Wed,16,TRUE,82,9,88,TRUE,1-7,1-7,Meat,Graduate student,Male,White or Caucasian,TRUE,149,pork
+control,1,2022-10-05T16:06:59Z,2022-10-05,Wed,16,TRUE,77,7,78,TRUE,1-7,1-7,Meat,Other,Male,White or Caucasian,TRUE,150,pork
+control,1,2022-10-05T16:17:23Z,2022-10-05,Wed,16,TRUE,47,18,83,FALSE,1-7,0,Flexitarian,Junior,Female,White or Caucasian,TRUE,151,pork
+control,1,2022-10-05T16:18:27Z,2022-10-05,Wed,16,TRUE,17,25,70,FALSE,0,0,Vegetarian,Junior,Female,Prefer not to answer,TRUE,152,pork
+control,1,2022-10-05T16:23:22Z,2022-10-05,Wed,16,TRUE,100,30,72,FALSE,8-14,0,Flexitarian,Sophomore,Female,Asian or Pacific Islander,TRUE,153,pork
+control,1,2022-10-05T16:27:49Z,2022-10-05,Wed,16,TRUE,69,10,84,TRUE,15-21,1-7,Meat,Sophomore,Female,Asian or Pacific Islander,TRUE,154,pork
+control,1,2022-10-05T16:52:27Z,2022-10-05,Wed,16,TRUE,81,64,81,TRUE,8-14,1-7,Meat,Sophomore,Male,Asian or Pacific Islander,TRUE,155,pork
+control,1,2022-10-05T16:57:11Z,2022-10-05,Wed,16,TRUE,66,36,62,FALSE,1-7,1-7,Flexitarian,Freshman,Female,Asian or Pacific Islander,TRUE,156,pork
+control,1,2022-10-06T13:27:09Z,2022-10-06,Thu,13,TRUE,100,11,83,FALSE,0,1-7,Pescatarian,Other,Male,White or Caucasian,TRUE,165,chicken
+control,1,2022-10-06T14:05:46Z,2022-10-06,Thu,14,TRUE,100,20,82,TRUE,1-7,1-7,Flexitarian,Sophomore,Female,White or Caucasian,TRUE,166,chicken
+control,1,2022-10-06T14:08:39Z,2022-10-06,Thu,14,TRUE,87,4,100,TRUE,8-14,1-7,Flexitarian,Freshman,Female,White or Caucasian,TRUE,167,chicken
+control,1,2022-10-06T14:12:23Z,2022-10-06,Thu,14,TRUE,100,0,99,TRUE,15-21,1-7,Flexitarian,Graduate student,Male,Asian or Pacific Islander,TRUE,168,chicken
+control,1,2022-10-06T14:13:24Z,2022-10-06,Thu,14,TRUE,89,0,100,TRUE,1-7,1-7,Meat,Graduate student,Male,A race/ethnicity not listed here,TRUE,169,chicken
+control,1,2022-10-06T14:16:49Z,2022-10-06,Thu,14,TRUE,95,49,92,TRUE,8-14,1-7,Meat,Junior,Male,"Hispanic or Latino,White or Caucasian",TRUE,170,chicken
+control,1,2022-10-06T14:23:05Z,2022-10-06,Thu,14,TRUE,86,33,57,TRUE,8-14,0,Meat,Junior,Male,White or Caucasian,TRUE,171,chicken
+control,1,2022-10-06T14:34:43Z,2022-10-06,Thu,14,TRUE,21,19,78,TRUE,15-21,1-7,Meat,Sophomore,Male,White or Caucasian,TRUE,172,chicken
+control,1,2022-10-06T15:04:40Z,2022-10-06,Thu,15,TRUE,87,5,97,TRUE,8-14,8-14,Meat,Freshman,Male,Asian or Pacific Islander,TRUE,173,chicken
+control,1,2022-10-06T15:11:30Z,2022-10-06,Thu,15,TRUE,100,0,80,FALSE,1-7,0,Flexitarian,Sophomore,Female,"Hispanic or Latino,White or Caucasian",TRUE,174,chicken
+control,1,2022-10-06T15:21:15Z,2022-10-06,Thu,15,TRUE,99,34,79,FALSE,8-14,1-7,Flexitarian,Freshman,Female,Hispanic or Latino,TRUE,175,chicken
+control,1,2022-10-06T15:22:08Z,2022-10-06,Thu,15,TRUE,100,73,75,FALSE,0,1-7,Flexitarian,Sophomore,Female,Asian or Pacific Islander,TRUE,176,chicken
+control,1,2022-10-06T15:29:50Z,2022-10-06,Thu,15,TRUE,100,0,100,TRUE,1-7,0,Flexitarian,Freshman,Female,Hispanic or Latino,TRUE,177,chicken
+control,1,2022-10-06T15:31:25Z,2022-10-06,Thu,15,TRUE,37,62,60,TRUE,1-7,0,Flexitarian,Sophomore,Female,Asian or Pacific Islander,TRUE,178,chicken
+control,1,2022-10-06T15:35:49Z,2022-10-06,Thu,15,TRUE,87,19,89,FALSE,1-7,0,Flexitarian,Freshman,Male,Asian or Pacific Islander,TRUE,179,chicken
+control,1,2022-10-06T15:38:32Z,2022-10-06,Thu,15,TRUE,86,27,69,TRUE,8-14,1-7,Meat,Freshman,Male,Asian or Pacific Islander,TRUE,180,chicken
+control,1,2022-10-06T15:42:53Z,2022-10-06,Thu,15,TRUE,71,8,61,TRUE,1-7,1-7,Meat,Freshman,Female,Asian or Pacific Islander,TRUE,181,chicken
+control,1,2022-10-06T15:43:05Z,2022-10-06,Thu,15,TRUE,93,0,100,TRUE,8-14,0,Meat,Freshman,Female,Asian or Pacific Islander,TRUE,182,chicken
+control,1,2022-10-06T15:43:17Z,2022-10-06,Thu,15,TRUE,97,6,96,TRUE,8-14,1-7,Meat,Freshman,Female,Asian or Pacific Islander,TRUE,183,chicken
+control,1,2022-10-06T15:45:54Z,2022-10-06,Thu,15,TRUE,82,7,87,TRUE,1-7,0,Meat,Junior,Male,Asian or Pacific Islander,TRUE,184,chicken
+control,1,2022-10-06T15:47:17Z,2022-10-06,Thu,15,TRUE,100,40,60,FALSE,1-7,0,Flexitarian,Junior,Female,White or Caucasian,TRUE,185,chicken
+control,1,2022-10-06T15:55:04Z,2022-10-06,Thu,15,TRUE,100,9,94,TRUE,1-7,1-7,Meat,Junior,Female,Asian or Pacific Islander,TRUE,186,chicken
+control,1,2022-10-06T15:56:59Z,2022-10-06,Thu,15,TRUE,85,0,100,FALSE,0,0,Vegetarian,Freshman,Female,Asian or Pacific Islander,TRUE,187,chicken
+control,1,2022-10-06T16:00:54Z,2022-10-06,Thu,16,TRUE,66,30,70,TRUE,8-14,1-7,Meat,Junior,Female,"Asian or Pacific Islander,White or Caucasian",TRUE,188,chicken
+control,1,2022-10-06T16:03:11Z,2022-10-06,Thu,16,TRUE,82,0,80,FALSE,0,1-7,Pescatarian,Graduate student,Male,White or Caucasian,TRUE,189,chicken
+control,1,2022-10-06T16:06:00Z,2022-10-06,Thu,16,TRUE,100,7,94,TRUE,1-7,1-7,Meat,Junior,Male,White or Caucasian,TRUE,190,chicken
+control,1,2022-10-06T16:07:31Z,2022-10-06,Thu,16,TRUE,81,7,100,TRUE,1-7,1-7,Flexitarian,Graduate student,Male,"Black or African American,White or Caucasian",TRUE,191,chicken
+control,1,2022-10-06T16:08:44Z,2022-10-06,Thu,16,TRUE,93,18,83,FALSE,0,1-7,Pescatarian,Junior,Female,"Hispanic or Latino,White or Caucasian",TRUE,192,chicken
+control,1,2022-10-06T16:09:20Z,2022-10-06,Thu,16,TRUE,100,0,100,TRUE,8-14,1-7,Meat,Sophomore,Female,Hispanic or Latino,TRUE,193,chicken
+control,1,2022-10-06T16:17:18Z,2022-10-06,Thu,16,TRUE,71,76,74,TRUE,1-7,1-7,Meat,Graduate student,Male,White or Caucasian,TRUE,194,chicken
+control,1,2022-10-06T16:27:07Z,2022-10-06,Thu,16,TRUE,82,9,81,TRUE,8-14,1-7,Meat,Junior,Male,Hispanic or Latino,TRUE,195,chicken
+control,1,2022-10-06T16:47:22Z,2022-10-06,Thu,16,TRUE,100,53,53,FALSE,0,1-7,Flexitarian,Graduate student,Female,White or Caucasian,TRUE,196,chicken
+intervention,2,2022-10-10T11:07:51Z,2022-10-10,Mon,11,TRUE,82,3,84,FALSE,0,1-7,Pescatarian,Freshman,Female,Hispanic or Latino,TRUE,210,chicken
+intervention,2,2022-10-10T14:02:12Z,2022-10-10,Mon,14,TRUE,73,0,100,TRUE,8-14,1-7,Meat,Sophomore,Male,Asian or Pacific Islander,TRUE,211,chicken
+intervention,2,2022-10-10T14:10:34Z,2022-10-10,Mon,14,TRUE,61,6,92,FALSE,0,0,Vegan,Sophomore,Female,White or Caucasian,TRUE,212,chicken
+intervention,2,2022-10-10T14:11:57Z,2022-10-10,Mon,14,TRUE,91,10,87,TRUE,8-14,1-7,Meat,Junior,Female,White or Caucasian,TRUE,213,chicken
+intervention,2,2022-10-10T14:41:20Z,2022-10-10,Mon,14,TRUE,83,0,82,TRUE,8-14,1-7,Meat,Sophomore,Female,Asian or Pacific Islander,TRUE,214,chicken
+intervention,2,2022-10-10T14:50:55Z,2022-10-10,Mon,14,TRUE,83,75,94,TRUE,1-7,0,Meat,Freshman,Female,Prefer not to answer,TRUE,215,chicken
+intervention,2,2022-10-10T14:59:42Z,2022-10-10,Mon,14,TRUE,59,37,69,FALSE,0,0,Vegetarian,Sophomore,Male,Hispanic or Latino,TRUE,216,chicken
+intervention,2,2022-10-10T14:59:52Z,2022-10-10,Mon,14,TRUE,99,22,60,TRUE,8-14,1-7,Meat,Sophomore,Male,White or Caucasian,TRUE,217,chicken
+intervention,2,2022-10-10T15:00:27Z,2022-10-10,Mon,15,TRUE,100,96,79,TRUE,1-7,0,Meat,Sophomore,Female,Hispanic or Latino,TRUE,218,chicken
+intervention,2,2022-10-10T15:00:58Z,2022-10-10,Mon,15,TRUE,83,70,86,TRUE,1-7,0,Meat,Sophomore,Female,Hispanic or Latino,TRUE,219,chicken
+intervention,2,2022-10-10T15:02:46Z,2022-10-10,Mon,15,TRUE,92,100,74,TRUE,8-14,0,Meat,Sophomore,Female,Hispanic or Latino,TRUE,220,chicken
+intervention,2,2022-10-10T15:12:00Z,2022-10-10,Mon,15,TRUE,86,76,91,TRUE,1-7,0,Meat,Freshman,Female,Prefer not to answer,TRUE,221,chicken
+intervention,2,2022-10-10T15:18:36Z,2022-10-10,Mon,15,TRUE,21,78,27,TRUE,1-7,0,Flexitarian,Sophomore,Female,Asian or Pacific Islander,TRUE,222,chicken
+intervention,2,2022-10-10T15:19:49Z,2022-10-10,Mon,15,TRUE,70,0,65,TRUE,8-14,1-7,Meat,Freshman,Female,Prefer not to answer,TRUE,223,chicken
+intervention,2,2022-10-10T15:20:30Z,2022-10-10,Mon,15,TRUE,90,24,94,TRUE,8-14,1-7,Meat,Freshman,Male,"Hispanic or Latino,White or Caucasian",TRUE,224,chicken
+intervention,2,2022-10-10T15:20:37Z,2022-10-10,Mon,15,TRUE,83,0,94,TRUE,1-7,1-7,Meat,Freshman,Male,Asian or Pacific Islander,TRUE,225,chicken
+intervention,2,2022-10-10T15:20:55Z,2022-10-10,Mon,15,TRUE,80,37,85,TRUE,1-7,1-7,Flexitarian,Freshman,Female,"Asian or Pacific Islander,White or Caucasian",TRUE,226,chicken
+intervention,2,2022-10-10T15:22:09Z,2022-10-10,Mon,15,TRUE,100,100,100,TRUE,8-14,1-7,Meat,Freshman,Male,Asian or Pacific Islander,TRUE,227,chicken
+intervention,2,2022-10-10T15:46:33Z,2022-10-10,Mon,15,TRUE,100,17,100,TRUE,1-7,1-7,Meat,Graduate student,Male,A race/ethnicity not listed here,TRUE,228,chicken
+intervention,2,2022-10-10T15:52:01Z,2022-10-10,Mon,15,TRUE,81,66,90,TRUE,8-14,8-14,Meat,Freshman,Male,Hispanic or Latino,TRUE,230,chicken
+intervention,2,2022-10-10T16:03:48Z,2022-10-10,Mon,16,TRUE,85,12,100,FALSE,0,0,Vegetarian,Junior,Female,Asian or Pacific Islander,TRUE,231,chicken
+intervention,2,2022-10-10T16:06:15Z,2022-10-10,Mon,16,TRUE,77,3,91,TRUE,1-7,1-7,Meat,Junior,Male,Asian or Pacific Islander,TRUE,232,chicken
+intervention,2,2022-10-10T16:06:17Z,2022-10-10,Mon,16,TRUE,82,1,82,TRUE,15-21,1-7,Meat,Junior,Male,Black or African American,TRUE,233,chicken
+intervention,2,2022-10-10T16:15:02Z,2022-10-10,Mon,16,TRUE,81,10,86,FALSE,1-7,1-7,Flexitarian,Senior,Female,White or Caucasian,TRUE,234,chicken
+intervention,2,2022-10-10T16:27:36Z,2022-10-10,Mon,16,TRUE,84,13,86,TRUE,8-14,1-7,Meat,Senior,Female,"Black or African American,White or Caucasian",TRUE,235,chicken
+intervention,2,2022-10-10T16:30:15Z,2022-10-10,Mon,16,TRUE,100,8,60,TRUE,1-7,0,Meat,Junior,Female,Asian or Pacific Islander,TRUE,236,chicken
+intervention,2,2022-10-11T14:02:10Z,2022-10-11,Tue,14,TRUE,72,18,79,TRUE,8-14,1-7,Meat,Freshman,Male,Asian or Pacific Islander,TRUE,240,pork
+intervention,2,2022-10-11T14:14:24Z,2022-10-11,Tue,14,TRUE,100,20,69,TRUE,1-7,1-7,Meat,Sophomore,Male,White or Caucasian,TRUE,241,pork
+intervention,2,2022-10-11T14:23:34Z,2022-10-11,Tue,14,TRUE,91,0,81,FALSE,0,0,Vegetarian,Sophomore,Female,Asian or Pacific Islander,TRUE,242,pork
+intervention,2,2022-10-11T14:32:57Z,2022-10-11,Tue,14,TRUE,100,17,92,TRUE,8-14,1-7,Flexitarian,Other,Male,White or Caucasian,TRUE,243,pork
+intervention,2,2022-10-11T14:35:35Z,2022-10-11,Tue,14,TRUE,86,0,100,TRUE,8-14,1-7,Meat,Junior,Female,Hispanic or Latino,TRUE,244,pork
+intervention,2,2022-10-11T14:36:33Z,2022-10-11,Tue,14,TRUE,100,15,86,FALSE,1-7,1-7,Flexitarian,Junior,Non-binary,Hispanic or Latino,TRUE,245,pork
+intervention,2,2022-10-11T14:38:38Z,2022-10-11,Tue,14,TRUE,78,80,77,FALSE,1-7,0,Flexitarian,Sophomore,Female,Hispanic or Latino,TRUE,246,pork
+intervention,2,2022-10-11T14:51:52Z,2022-10-11,Tue,14,TRUE,100,0,69,FALSE,1-7,0,Flexitarian,Junior,Male,White or Caucasian,TRUE,247,pork
+intervention,2,2022-10-11T15:06:02Z,2022-10-11,Tue,15,TRUE,84,27,77,TRUE,1-7,1-7,Flexitarian,Freshman,Female,Asian or Pacific Islander,TRUE,248,pork
+intervention,2,2022-10-11T15:06:10Z,2022-10-11,Tue,15,TRUE,81,100,17,TRUE,8-14,1-7,Meat,Freshman,Male,"Native American or Alaskan Native,White or Caucasian",TRUE,249,pork
+intervention,2,2022-10-11T15:06:44Z,2022-10-11,Tue,15,TRUE,84,73,88,TRUE,8-14,0,Meat,Freshman,Male,White or Caucasian,TRUE,250,pork
+intervention,2,2022-10-11T15:08:08Z,2022-10-11,Tue,15,TRUE,100,19,85,TRUE,8-14,1-7,Meat,Freshman,Male,Prefer not to answer,TRUE,251,pork
+intervention,2,2022-10-11T15:08:36Z,2022-10-11,Tue,15,TRUE,75,25,75,TRUE,1-7,1-7,Meat,Sophomore,Male,Asian or Pacific Islander,TRUE,252,pork
+intervention,2,2022-10-11T15:12:27Z,2022-10-11,Tue,15,TRUE,100,0,61,TRUE,1-7,0,Meat,Senior,Female,White or Caucasian,TRUE,253,pork
+intervention,2,2022-10-11T15:15:35Z,2022-10-11,Tue,15,TRUE,87,24,92,TRUE,1-7,1-7,Flexitarian,Junior,Female,"Hispanic or Latino,White or Caucasian",TRUE,254,pork
+intervention,2,2022-10-11T15:19:29Z,2022-10-11,Tue,15,TRUE,100,0,100,TRUE,15-21,0,Meat,Sophomore,Male,Hispanic or Latino,TRUE,255,pork
+intervention,2,2022-10-11T15:25:03Z,2022-10-11,Tue,15,TRUE,83,6,93,TRUE,1-7,1-7,Flexitarian,Freshman,Female,Asian or Pacific Islander,TRUE,256,pork
+intervention,2,2022-10-11T15:27:51Z,2022-10-11,Tue,15,TRUE,92,25,86,TRUE,1-7,1-7,Flexitarian,Freshman,Prefer not to answer,Prefer not to answer,TRUE,257,pork
+intervention,2,2022-10-11T15:36:38Z,2022-10-11,Tue,15,TRUE,100,17,88,TRUE,1-7,1-7,Flexitarian,Junior,Female,Hispanic or Latino,TRUE,258,pork
+intervention,2,2022-10-11T15:52:46Z,2022-10-11,Tue,15,TRUE,100,15,82,TRUE,1-7,0,Meat,Freshman,Female,White or Caucasian,TRUE,261,pork
+intervention,2,2022-10-11T15:54:26Z,2022-10-11,Tue,15,TRUE,76,35,74,TRUE,8-14,0,Meat,Junior,Female,Asian or Pacific Islander,TRUE,262,pork
+intervention,2,2022-10-11T15:54:47Z,2022-10-11,Tue,15,TRUE,73,70,31,FALSE,1-7,1-7,Meat,Junior,Male,White or Caucasian,TRUE,263,pork
+intervention,2,2022-10-11T16:01:27Z,2022-10-11,Tue,16,TRUE,100,40,61,TRUE,1-7,0,Flexitarian,Sophomore,Female,Asian or Pacific Islander,TRUE,264,pork
+intervention,2,2022-10-11T16:01:40Z,2022-10-11,Tue,16,TRUE,100,15,90,TRUE,1-7,8-14,Flexitarian,Freshman,Female,White or Caucasian,TRUE,265,pork
+intervention,2,2022-10-11T16:02:44Z,2022-10-11,Tue,16,TRUE,100,0,100,FALSE,0,0,Vegan,Junior,Female,White or Caucasian,TRUE,266,pork
+intervention,2,2022-10-11T16:02:58Z,2022-10-11,Tue,16,TRUE,82,6,68,FALSE,1-7,0,Flexitarian,Junior,Female,Hispanic or Latino,TRUE,267,pork
+intervention,2,2022-10-11T16:14:06Z,2022-10-11,Tue,16,TRUE,80,64,95,TRUE,1-7,0,Meat,Freshman,Female,Prefer not to answer,TRUE,268,pork
+intervention,2,2022-10-11T16:21:19Z,2022-10-11,Tue,16,TRUE,92,11,89,TRUE,8-14,1-7,Meat,Sophomore,Female,Asian or Pacific Islander,TRUE,269,pork
+intervention,2,2022-10-11T16:37:23Z,2022-10-11,Tue,16,TRUE,100,0,100,TRUE,8-14,0,Meat,Sophomore,Female,Hispanic or Latino,TRUE,270,pork
+intervention,2,2022-10-12T14:14:40Z,2022-10-12,Wed,14,TRUE,100,14,91,TRUE,8-14,1-7,Flexitarian,Other,Male,Prefer not to answer,TRUE,272,beef
+intervention,2,2022-10-12T14:14:53Z,2022-10-12,Wed,14,TRUE,86,61,41,FALSE,0,0,Vegetarian,Freshman,Male,Asian or Pacific Islander,TRUE,273,beef
+intervention,2,2022-10-12T14:48:16Z,2022-10-12,Wed,14,TRUE,100,100,83,TRUE,8-14,8-14,Meat,Senior,Female,Hispanic or Latino,TRUE,275,beef
+intervention,2,2022-10-12T15:08:50Z,2022-10-12,Wed,15,TRUE,84,77,100,TRUE,1-7,1-7,Flexitarian,Freshman,Prefer not to answer,Prefer not to answer,TRUE,276,beef
+intervention,2,2022-10-12T15:13:22Z,2022-10-12,Wed,15,TRUE,82,8,77,FALSE,1-7,1-7,Flexitarian,Graduate student,Male,White or Caucasian,TRUE,277,beef
+intervention,2,2022-10-12T15:31:11Z,2022-10-12,Wed,15,TRUE,84,39,83,TRUE,8-14,1-7,Meat,Freshman,Female,Hispanic or Latino,TRUE,278,beef
+intervention,2,2022-10-12T15:33:01Z,2022-10-12,Wed,15,TRUE,93,39,85,TRUE,8-14,1-7,Meat,Freshman,Female,Hispanic or Latino,TRUE,279,beef
+intervention,2,2022-10-12T15:42:32Z,2022-10-12,Wed,15,TRUE,100,0,100,TRUE,1-7,0,Meat,Freshman,Female,White or Caucasian,TRUE,281,beef
+intervention,2,2022-10-12T15:57:19Z,2022-10-12,Wed,15,TRUE,93,56,47,TRUE,1-7,1-7,Flexitarian,Senior,Female,White or Caucasian,TRUE,282,beef
+intervention,2,2022-10-12T16:01:06Z,2022-10-12,Wed,16,TRUE,67,65,39,TRUE,8-14,1-7,Meat,Freshman,Male,Asian or Pacific Islander,TRUE,283,beef
+intervention,2,2022-10-12T16:05:15Z,2022-10-12,Wed,16,TRUE,90,0,100,TRUE,15-21,1-7,Meat,Junior,Female,Hispanic or Latino,TRUE,284,beef
+intervention,2,2022-10-12T16:17:10Z,2022-10-12,Wed,16,TRUE,85,22,82,TRUE,15-21,15-21,Meat,Sophomore,Male,Asian or Pacific Islander,TRUE,286,beef
+intervention,2,2022-10-13T14:11:21Z,2022-10-13,Thu,14,TRUE,96,11,67,TRUE,15-21,1-7,Meat,Sophomore,Male,Asian or Pacific Islander,TRUE,288,chicken
+intervention,2,2022-10-13T14:11:45Z,2022-10-13,Thu,14,TRUE,100,8,83,TRUE,8-14,1-7,Meat,Junior,Male,"Hispanic or Latino,White or Caucasian",TRUE,289,chicken
+intervention,2,2022-10-13T14:37:24Z,2022-10-13,Thu,14,TRUE,76,0,82,TRUE,8-14,1-7,Flexitarian,Sophomore,Female,White or Caucasian,TRUE,290,chicken
+intervention,2,2022-10-13T14:45:51Z,2022-10-13,Thu,14,TRUE,95,79,87,TRUE,15-21,1-7,Meat,Senior,Male,Prefer not to answer,TRUE,291,chicken
+intervention,2,2022-10-13T15:08:07Z,2022-10-13,Thu,15,TRUE,93,18,98,TRUE,15-21,8-14,Meat,Junior,Male,Asian or Pacific Islander,TRUE,292,chicken
+intervention,2,2022-10-13T15:11:34Z,2022-10-13,Thu,15,TRUE,66,30,68,TRUE,15-21,15-21,Meat,Sophomore,Male,Asian or Pacific Islander,TRUE,293,chicken
+intervention,2,2022-10-13T15:13:15Z,2022-10-13,Thu,15,TRUE,81,26,71,TRUE,8-14,1-7,Meat,Graduate student,Male,Asian or Pacific Islander,TRUE,294,chicken
+intervention,2,2022-10-13T15:13:38Z,2022-10-13,Thu,15,TRUE,61,17,38,TRUE,1-7,1-7,Flexitarian,Sophomore,Male,Asian or Pacific Islander,TRUE,295,chicken
+intervention,2,2022-10-13T15:14:28Z,2022-10-13,Thu,15,TRUE,94,0,93,TRUE,8-14,1-7,Meat,Sophomore,Female,Asian or Pacific Islander,TRUE,296,chicken
+intervention,2,2022-10-13T15:46:35Z,2022-10-13,Thu,15,TRUE,67,18,92,TRUE,8-14,1-7,Meat,Freshman,Male,Asian or Pacific Islander,TRUE,298,chicken
+intervention,2,2022-10-13T16:37:30Z,2022-10-13,Thu,16,TRUE,100,0,79,TRUE,1-7,1-7,Flexitarian,Sophomore,Male,White or Caucasian,TRUE,300,chicken
+intervention,2,2022-10-13T16:51:24Z,2022-10-13,Thu,16,TRUE,83,83,82,TRUE,1-7,1-7,Flexitarian,Freshman,Prefer not to answer,Prefer not to answer,TRUE,301,chicken
+intervention,2,2022-10-13T16:53:31Z,2022-10-13,Thu,16,TRUE,100,28,100,TRUE,8-14,8-14,Meat,Sophomore,Male,Hispanic or Latino,TRUE,302,chicken
+intervention,2,2022-10-13T16:53:39Z,2022-10-13,Thu,16,TRUE,100,0,100,TRUE,1-7,1-7,Meat,Junior,Male,Hispanic or Latino,TRUE,303,chicken
+intervention,2,2022-10-13T16:53:47Z,2022-10-13,Thu,16,TRUE,73,15,77,TRUE,15-21,0,Meat,Sophomore,Male,Hispanic or Latino,TRUE,304,chicken
+intervention,2,2022-10-14T14:20:08Z,2022-10-14,Fri,14,TRUE,93,13,100,TRUE,8-14,0,Flexitarian,Freshman,Male,Asian or Pacific Islander,TRUE,309,chicken
+intervention,2,2022-10-14T14:39:35Z,2022-10-14,Fri,14,TRUE,68,30,78,TRUE,8-14,1-7,Meat,Freshman,Male,Asian or Pacific Islander,TRUE,310,chicken
+intervention,2,2022-10-14T14:40:20Z,2022-10-14,Fri,14,TRUE,100,0,82,TRUE,8-14,0,Meat,Sophomore,Female,"Black or African American,Hispanic or Latino",TRUE,311,chicken
+intervention,2,2022-10-14T14:41:59Z,2022-10-14,Fri,14,TRUE,81,19,74,TRUE,1-7,1-7,Flexitarian,Freshman,Female,White or Caucasian,TRUE,312,chicken
+intervention,2,2022-10-14T14:42:18Z,2022-10-14,Fri,14,TRUE,86,61,40,TRUE,8-14,1-7,Meat,Freshman,Female,Asian or Pacific Islander,TRUE,313,chicken
+intervention,2,2022-10-14T14:42:29Z,2022-10-14,Fri,14,TRUE,86,74,35,TRUE,8-14,8-14,Meat,Freshman,Female,White or Caucasian,TRUE,314,chicken
+intervention,2,2022-10-14T14:45:58Z,2022-10-14,Fri,14,TRUE,100,24,69,FALSE,0,0,Vegetarian,Freshman,Male,Asian or Pacific Islander,TRUE,315,chicken
+intervention,2,2022-10-14T14:47:00Z,2022-10-14,Fri,14,TRUE,100,100,100,TRUE,15-21,1-7,Meat,Freshman,Male,Black or African American,TRUE,316,chicken
+intervention,2,2022-10-14T15:40:29Z,2022-10-14,Fri,15,TRUE,86,6,87,FALSE,8-14,1-7,Meat,Freshman,Female,Asian or Pacific Islander,TRUE,317,chicken
+intervention,2,2022-10-14T15:41:12Z,2022-10-14,Fri,15,TRUE,82,0,100,TRUE,15-21,1-7,Meat,Freshman,Male,Hispanic or Latino,TRUE,318,chicken
+intervention,2,2022-10-14T16:03:03Z,2022-10-14,Fri,16,TRUE,84,20,78,TRUE,8-14,1-7,Meat,Freshman,Female,Asian or Pacific Islander,TRUE,319,chicken
+intervention,2,2022-10-14T16:18:09Z,2022-10-14,Fri,16,TRUE,67,27,91,TRUE,8-14,1-7,Meat,Sophomore,Female,Asian or Pacific Islander,TRUE,320,chicken
+intervention,2,2022-10-14T16:18:59Z,2022-10-14,Fri,16,TRUE,85,23,85,TRUE,8-14,1-7,Flexitarian,Sophomore,Female,Hispanic or Latino,TRUE,321,chicken
+intervention,2,2022-10-14T16:43:49Z,2022-10-14,Fri,16,TRUE,100,0,100,TRUE,8-14,0,Meat,Sophomore,Female,Hispanic or Latino,TRUE,322,chicken
+control,3,2022-10-17T14:09:16Z,2022-10-17,Mon,14,TRUE,92,6,84,TRUE,15-21,0,Meat,Senior,Male,White or Caucasian,TRUE,326,pork
+control,3,2022-10-17T14:10:35Z,2022-10-17,Mon,14,TRUE,76,22,73,TRUE,0,1-7,Pescatarian,Sophomore,Female,White or Caucasian,TRUE,327,pork
+control,3,2022-10-17T14:13:23Z,2022-10-17,Mon,14,TRUE,38,70,37,FALSE,15-21,8-14,Meat,Sophomore,Female,White or Caucasian,TRUE,328,pork
+control,3,2022-10-17T14:14:20Z,2022-10-17,Mon,14,TRUE,63,57,68,TRUE,8-14,1-7,Meat,Sophomore,Male,"Hispanic or Latino,White or Caucasian",TRUE,329,pork
+control,3,2022-10-17T14:22:35Z,2022-10-17,Mon,14,TRUE,100,0,100,TRUE,8-14,0,Meat,Sophomore,Female,Hispanic or Latino,TRUE,330,pork
+control,3,2022-10-17T14:23:13Z,2022-10-17,Mon,14,TRUE,83,28,76,TRUE,15-21,0,Meat,Sophomore,Male,Asian or Pacific Islander,TRUE,331,pork
+control,3,2022-10-17T14:29:45Z,2022-10-17,Mon,14,TRUE,100,7,90,FALSE,1-7,1-7,Flexitarian,Sophomore,Female,Asian or Pacific Islander,TRUE,332,pork
+control,3,2022-10-17T14:39:01Z,2022-10-17,Mon,14,TRUE,86,10,88,TRUE,8-14,1-7,Meat,Sophomore,Female,Asian or Pacific Islander,TRUE,333,pork
+control,3,2022-10-17T14:42:29Z,2022-10-17,Mon,14,TRUE,100,20,73,FALSE,1-7,1-7,Meat,Sophomore,Female,"Asian or Pacific Islander,White or Caucasian",TRUE,334,pork
+control,3,2022-10-17T15:04:29Z,2022-10-17,Mon,15,TRUE,68,32,38,FALSE,1-7,0,Vegan,Sophomore,Female,Asian or Pacific Islander,TRUE,335,pork
+control,3,2022-10-17T15:11:03Z,2022-10-17,Mon,15,TRUE,99,3,95,TRUE,8-14,1-7,Meat,Sophomore,Male,Hispanic or Latino,TRUE,336,pork
+control,3,2022-10-17T15:15:37Z,2022-10-17,Mon,15,TRUE,74,21,89,TRUE,8-14,1-7,Meat,Freshman,Male,White or Caucasian,TRUE,337,pork
+control,3,2022-10-17T15:31:42Z,2022-10-17,Mon,15,TRUE,75,35,75,TRUE,8-14,1-7,Meat,Junior,Male,Asian or Pacific Islander,TRUE,338,pork
+control,3,2022-10-17T16:06:24Z,2022-10-17,Mon,16,TRUE,100,11,91,TRUE,8-14,0,Meat,Sophomore,Male,Hispanic or Latino,TRUE,339,pork
+control,3,2022-10-17T16:07:39Z,2022-10-17,Mon,16,TRUE,86,17,78,TRUE,8-14,1-7,Meat,Sophomore,Female,"Asian or Pacific Islander,White or Caucasian",TRUE,340,pork
+control,3,2022-10-17T16:11:35Z,2022-10-17,Mon,16,TRUE,99,61,42,TRUE,8-14,1-7,Meat,Sophomore,Male,"Hispanic or Latino,White or Caucasian",TRUE,341,pork
+control,3,2022-10-17T16:15:07Z,2022-10-17,Mon,16,TRUE,68,35,72,TRUE,8-14,8-14,Meat,Junior,Female,"Asian or Pacific Islander,White or Caucasian",TRUE,342,pork
+control,3,2022-10-17T16:16:40Z,2022-10-17,Mon,16,TRUE,100,17,100,FALSE,0,0,Vegetarian,Sophomore,Male,White or Caucasian,TRUE,343,pork
+control,3,2022-10-17T16:16:53Z,2022-10-17,Mon,16,TRUE,78,12,85,TRUE,8-14,1-7,Meat,Sophomore,Male,White or Caucasian,TRUE,344,pork
+control,3,2022-10-17T16:31:24Z,2022-10-17,Mon,16,TRUE,100,18,83,TRUE,8-14,1-7,Meat,Sophomore,Male,"Asian or Pacific Islander,White or Caucasian",TRUE,345,pork
+control,3,2022-10-17T16:34:30Z,2022-10-17,Mon,16,TRUE,100,19,81,TRUE,8-14,1-7,Meat,Sophomore,Male,Asian or Pacific Islander,TRUE,346,pork
+control,3,2022-10-17T16:35:11Z,2022-10-17,Mon,16,TRUE,71,70,79,TRUE,8-14,1-7,Meat,Other,Male,White or Caucasian,TRUE,347,pork
+control,3,2022-10-17T16:41:51Z,2022-10-17,Mon,16,TRUE,69,41,58,TRUE,1-7,1-7,Flexitarian,Senior,Female,White or Caucasian,TRUE,348,pork
+control,3,2022-10-18T13:46:27Z,2022-10-18,Tue,13,TRUE,91,0,87,TRUE,8-14,1-7,Meat,Sophomore,Female,Asian or Pacific Islander,TRUE,352,chicken
+control,3,2022-10-18T14:06:40Z,2022-10-18,Tue,14,TRUE,70,17,70,TRUE,8-14,1-7,Meat,Freshman,Male,Asian or Pacific Islander,TRUE,353,chicken
+control,3,2022-10-18T14:09:51Z,2022-10-18,Tue,14,TRUE,86,79,23,TRUE,15-21,15-21,Meat,Freshman,Male,White or Caucasian,TRUE,354,chicken
+control,3,2022-10-18T15:24:26Z,2022-10-18,Tue,15,TRUE,91,30,71,TRUE,8-14,1-7,Meat,Freshman,Male,White or Caucasian,TRUE,356,chicken
+control,3,2022-10-18T15:29:21Z,2022-10-18,Tue,15,TRUE,84,38,62,FALSE,1-7,1-7,Flexitarian,Senior,Female,White or Caucasian,TRUE,357,chicken
+control,3,2022-10-18T15:39:41Z,2022-10-18,Tue,15,TRUE,84,21,78,TRUE,1-7,1-7,Meat,Senior,Female,White or Caucasian,TRUE,358,chicken
+control,3,2022-10-18T15:40:07Z,2022-10-18,Tue,15,TRUE,77,5,83,TRUE,8-14,0,Meat,Senior,Female,White or Caucasian,TRUE,359,chicken
+control,3,2022-10-18T16:09:04Z,2022-10-18,Tue,16,TRUE,82,3,94,TRUE,8-14,1-7,Meat,Freshman,Male,Asian or Pacific Islander,TRUE,360,chicken
+control,3,2022-10-18T16:13:51Z,2022-10-18,Tue,16,TRUE,76,0,100,TRUE,8-14,1-7,Meat,Freshman,Female,"Asian or Pacific Islander,A race/ethnicity not listed here",TRUE,361,chicken
+control,3,2022-10-18T16:27:39Z,2022-10-18,Tue,16,TRUE,29,66,31,TRUE,8-14,0,Meat,Senior,Female,Hispanic or Latino,TRUE,362,chicken
+control,3,2022-10-18T16:33:35Z,2022-10-18,Tue,16,TRUE,83,0,100,TRUE,8-14,1-7,Meat,Sophomore,Female,Asian or Pacific Islander,TRUE,363,chicken
+control,3,2022-10-19T13:15:54Z,2022-10-19,Wed,13,TRUE,82,20,90,FALSE,0,1-7,Pescatarian,Sophomore,Female,Asian or Pacific Islander,TRUE,365,pork
+control,3,2022-10-19T14:05:22Z,2022-10-19,Wed,14,TRUE,81,8,73,TRUE,1-7,1-7,Meat,Freshman,Female,"Asian or Pacific Islander,Hispanic or Latino,White or Caucasian",TRUE,366,pork
+control,3,2022-10-19T14:08:31Z,2022-10-19,Wed,14,TRUE,89,61,72,TRUE,1-7,1-7,Meat,Other,Male,White or Caucasian,TRUE,367,pork
+control,3,2022-10-19T14:11:43Z,2022-10-19,Wed,14,TRUE,83,48,62,FALSE,0,1-7,Pescatarian,Junior,Female,White or Caucasian,TRUE,368,pork
+control,3,2022-10-19T14:43:50Z,2022-10-19,Wed,14,TRUE,100,0,100,TRUE,8-14,1-7,Meat,Sophomore,Female,Asian or Pacific Islander,TRUE,369,pork
+control,3,2022-10-19T14:48:53Z,2022-10-19,Wed,14,TRUE,100,33,83,TRUE,8-14,1-7,Meat,Sophomore,Female,Asian or Pacific Islander,TRUE,370,pork
+control,3,2022-10-19T15:38:31Z,2022-10-19,Wed,15,TRUE,91,20,87,TRUE,15-21,1-7,Meat,Freshman,Male,White or Caucasian,TRUE,371,pork
+control,3,2022-10-19T15:39:09Z,2022-10-19,Wed,15,TRUE,90,15,85,TRUE,15-21,1-7,Meat,Freshman,Male,White or Caucasian,TRUE,372,pork
+control,3,2022-10-19T15:40:41Z,2022-10-19,Wed,15,TRUE,68,28,74,TRUE,8-14,8-14,Meat,Freshman,Male,"Asian or Pacific Islander,A race/ethnicity not listed here",TRUE,373,pork
+control,3,2022-10-19T16:07:35Z,2022-10-19,Wed,16,TRUE,65,18,82,TRUE,1-7,1-7,Meat,Junior,Male,White or Caucasian,TRUE,375,pork
+control,3,2022-10-20T15:08:25Z,2022-10-20,Thu,15,TRUE,92,10,97,TRUE,1-7,0,Flexitarian,Senior,Female,Hispanic or Latino,TRUE,381,chicken
+control,3,2022-10-20T15:19:42Z,2022-10-20,Thu,15,TRUE,93,2,86,FALSE,8-14,0,Meat,Freshman,Male,Prefer not to answer,TRUE,382,chicken
+control,3,2022-10-20T15:27:41Z,2022-10-20,Thu,15,TRUE,83,21,61,TRUE,1-7,1-7,Flexitarian,Junior,Male,Asian or Pacific Islander,TRUE,383,chicken
+control,3,2022-10-20T15:29:10Z,2022-10-20,Thu,15,TRUE,100,100,100,TRUE,8-14,1-7,Meat,Junior,Female,Asian or Pacific Islander,TRUE,384,chicken
+control,3,2022-10-20T15:29:53Z,2022-10-20,Thu,15,TRUE,85,38,79,TRUE,1-7,0,Flexitarian,Freshman,Female,Asian or Pacific Islander,TRUE,385,chicken
+control,3,2022-10-20T15:30:47Z,2022-10-20,Thu,15,TRUE,93,17,85,TRUE,15-21,8-14,Flexitarian,Senior,Male,Asian or Pacific Islander,TRUE,386,chicken
+control,3,2022-10-20T15:52:38Z,2022-10-20,Thu,15,TRUE,58,100,78,TRUE,8-14,1-7,Meat,Junior,Female,Asian or Pacific Islander,TRUE,387,chicken
+control,3,2022-10-20T16:11:19Z,2022-10-20,Thu,16,TRUE,88,0,100,TRUE,15-21,1-7,Meat,Freshman,Female,Hispanic or Latino,TRUE,388,chicken
+control,3,2022-10-20T16:16:42Z,2022-10-20,Thu,16,TRUE,100,0,83,TRUE,8-14,0,Meat,Junior,Prefer not to answer,Prefer not to answer,TRUE,389,chicken
+control,3,2022-10-20T16:16:59Z,2022-10-20,Thu,16,TRUE,87,0,78,FALSE,0,0,Vegetarian,Freshman,Female,White or Caucasian,TRUE,390,chicken
+control,3,2022-10-20T16:18:21Z,2022-10-20,Thu,16,TRUE,80,0,94,FALSE,0,0,Vegan,Freshman,Female,White or Caucasian,TRUE,391,chicken
+control,3,2022-10-20T16:21:39Z,2022-10-20,Thu,16,TRUE,86,18,86,TRUE,1-7,0,Meat,Sophomore,Male,Asian or Pacific Islander,TRUE,392,chicken
+control,3,2022-10-21T15:46:44Z,2022-10-21,Fri,15,TRUE,98,7,88,TRUE,1-7,1-7,Flexitarian,Freshman,Female,A race/ethnicity not listed here,TRUE,398,beef
+control,3,2022-10-21T15:50:13Z,2022-10-21,Fri,15,TRUE,100,0,100,FALSE,1-7,0,Flexitarian,Junior,Female,Asian or Pacific Islander,TRUE,399,beef
+control,3,2022-10-21T15:54:12Z,2022-10-21,Fri,15,TRUE,83,28,82,FALSE,0,0,Vegetarian,Sophomore,Male,Asian or Pacific Islander,TRUE,400,beef
+control,3,2022-10-21T15:55:26Z,2022-10-21,Fri,15,TRUE,100,0,72,TRUE,1-7,1-7,Meat,Sophomore,Male,Hispanic or Latino,TRUE,401,beef
+control,3,2022-10-21T15:55:38Z,2022-10-21,Fri,15,TRUE,61,17,83,TRUE,8-14,1-7,Meat,Sophomore,Male,Asian or Pacific Islander,TRUE,402,beef
+control,3,2022-10-21T15:57:06Z,2022-10-21,Fri,15,TRUE,95,11,87,FALSE,1-7,1-7,Flexitarian,Sophomore,Male,White or Caucasian,TRUE,403,beef
+control,3,2022-10-21T15:57:14Z,2022-10-21,Fri,15,TRUE,82,0,80,TRUE,8-14,1-7,Meat,Sophomore,Female,Asian or Pacific Islander,TRUE,404,beef
+control,3,2022-10-21T16:08:52Z,2022-10-21,Fri,16,TRUE,74,57,59,TRUE,8-14,1-7,Meat,Sophomore,Male,Asian or Pacific Islander,TRUE,405,beef
+control,3,2022-10-21T16:09:26Z,2022-10-21,Fri,16,TRUE,65,0,100,TRUE,8-14,1-7,Meat,Sophomore,Male,"Hispanic or Latino,White or Caucasian",TRUE,406,beef
+control,3,2022-10-21T16:09:45Z,2022-10-21,Fri,16,TRUE,83,61,100,TRUE,22+,1-7,Meat,Sophomore,Male,Hispanic or Latino,TRUE,407,beef
+control,3,2022-10-21T16:15:23Z,2022-10-21,Fri,16,TRUE,39,26,78,TRUE,8-14,1-7,Meat,Freshman,Male,White or Caucasian,TRUE,409,beef
+control,3,2022-10-21T16:15:37Z,2022-10-21,Fri,16,TRUE,60,0,93,FALSE,0,1-7,Pescatarian,Freshman,Female,White or Caucasian,TRUE,410,beef
+intervention,4,2022-10-24T14:02:43Z,2022-10-24,Mon,14,TRUE,100,82,100,TRUE,1-7,1-7,Meat,Senior,Female,Hispanic or Latino,TRUE,420,chicken
+intervention,4,2022-10-24T14:29:31Z,2022-10-24,Mon,14,TRUE,79,57,46,TRUE,15-21,1-7,Meat,Senior,Male,Asian or Pacific Islander,TRUE,421,chicken
+intervention,4,2022-10-24T14:38:54Z,2022-10-24,Mon,14,TRUE,94,0,63,TRUE,8-14,1-7,Meat,Freshman,Female,Hispanic or Latino,TRUE,422,chicken
+intervention,4,2022-10-24T14:40:57Z,2022-10-24,Mon,14,TRUE,100,64,35,FALSE,0,0,Vegan,Freshman,Female,White or Caucasian,TRUE,423,chicken
+intervention,4,2022-10-24T15:01:11Z,2022-10-24,Mon,15,TRUE,70,4,69,FALSE,0,1-7,Pescatarian,Freshman,Female,Black or African American,TRUE,424,chicken
+intervention,4,2022-10-24T15:01:26Z,2022-10-24,Mon,15,TRUE,71,0,100,TRUE,15-21,1-7,Meat,Junior,Female,Asian or Pacific Islander,TRUE,425,chicken
+intervention,4,2022-10-24T15:23:33Z,2022-10-24,Mon,15,TRUE,82,48,50,TRUE,1-7,0,Flexitarian,Freshman,Female,Black or African American,TRUE,427,chicken
+intervention,4,2022-10-24T15:24:43Z,2022-10-24,Mon,15,TRUE,99,5,94,TRUE,1-7,1-7,Meat,Freshman,Female,Black or African American,TRUE,428,chicken
+intervention,4,2022-10-24T15:25:00Z,2022-10-24,Mon,15,TRUE,50,50,50,TRUE,1-7,1-7,Meat,Freshman,Female,Black or African American,TRUE,429,chicken
+intervention,4,2022-10-24T15:52:37Z,2022-10-24,Mon,15,TRUE,50,20,75,TRUE,15-21,1-7,Meat,Sophomore,Non-binary,Asian or Pacific Islander,TRUE,430,chicken
+intervention,4,2022-10-24T16:18:00Z,2022-10-24,Mon,16,TRUE,80,73,93,TRUE,1-7,0,Meat,Freshman,Female,Prefer not to answer,TRUE,431,chicken
+intervention,4,2022-10-24T16:20:04Z,2022-10-24,Mon,16,TRUE,65,35,63,TRUE,8-14,0,Flexitarian,Freshman,Male,White or Caucasian,TRUE,432,chicken
+intervention,4,2022-10-24T16:31:56Z,2022-10-24,Mon,16,TRUE,75,20,69,TRUE,8-14,1-7,Meat,Senior,Male,Black or African American,TRUE,433,chicken
+intervention,4,2022-10-24T16:31:58Z,2022-10-24,Mon,16,TRUE,100,16,93,TRUE,1-7,1-7,Meat,Junior,Male,"Asian or Pacific Islander,A race/ethnicity not listed here",TRUE,434,chicken
+intervention,4,2022-10-25T15:53:24Z,2022-10-25,Tue,15,TRUE,83,6,96,TRUE,15-21,15-21,Meat,Senior,Male,Black or African American,TRUE,438,beef
+intervention,4,2022-10-25T15:54:41Z,2022-10-25,Tue,15,TRUE,84,37,81,TRUE,8-14,0,Meat,Senior,Female,"Asian or Pacific Islander,Hispanic or Latino",TRUE,439,beef
+intervention,4,2022-10-25T15:54:56Z,2022-10-25,Tue,15,TRUE,83,0,90,TRUE,8-14,0,Flexitarian,Freshman,Male,Hispanic or Latino,TRUE,440,beef
+intervention,4,2022-10-25T15:55:02Z,2022-10-25,Tue,15,TRUE,95,8,100,FALSE,0,0,Vegan,Senior,Female,"Hispanic or Latino,White or Caucasian",TRUE,441,beef
+intervention,4,2022-10-25T15:55:05Z,2022-10-25,Tue,15,TRUE,60,0,84,FALSE,0,0,Vegan,Senior,Female,White or Caucasian,TRUE,442,beef
+intervention,4,2022-10-25T15:55:10Z,2022-10-25,Tue,15,TRUE,100,99,100,TRUE,8-14,0,Flexitarian,Freshman,Female,Hispanic or Latino,TRUE,443,beef
+intervention,4,2022-10-25T15:55:31Z,2022-10-25,Tue,15,TRUE,67,28,70,TRUE,8-14,1-7,Meat,Junior,Male,White or Caucasian,TRUE,444,beef
+intervention,4,2022-10-25T16:21:40Z,2022-10-25,Tue,16,TRUE,100,0,91,FALSE,0,0,Flexitarian,Graduate student,Female,White or Caucasian,TRUE,446,beef
+intervention,4,2022-10-25T16:29:08Z,2022-10-25,Tue,16,TRUE,38,63,32,FALSE,1-7,1-7,Flexitarian,Sophomore,Female,White or Caucasian,TRUE,447,beef
+intervention,4,2022-10-26T14:21:58Z,2022-10-26,Wed,14,TRUE,100,8,93,TRUE,1-7,1-7,Vegan,Junior,Male,Asian or Pacific Islander,TRUE,453,pork
+intervention,4,2022-10-26T14:27:40Z,2022-10-26,Wed,14,TRUE,82,4,96,TRUE,8-14,1-7,Meat,Freshman,Male,Asian or Pacific Islander,TRUE,454,pork
+intervention,4,2022-10-26T14:51:16Z,2022-10-26,Wed,14,TRUE,91,9,87,TRUE,8-14,1-7,Meat,Sophomore,Female,Asian or Pacific Islander,TRUE,456,pork
+intervention,4,2022-10-26T15:03:51Z,2022-10-26,Wed,15,TRUE,77,100,90,FALSE,0,0,Vegetarian,Graduate student,Male,Asian or Pacific Islander,TRUE,457,pork
+intervention,4,2022-10-26T15:09:03Z,2022-10-26,Wed,15,TRUE,61,67,64,TRUE,22+,1-7,Meat,Sophomore,Female,Asian or Pacific Islander,TRUE,458,pork
+intervention,4,2022-10-26T15:19:23Z,2022-10-26,Wed,15,TRUE,87,10,92,TRUE,15-21,1-7,Meat,Sophomore,Female,White or Caucasian,TRUE,459,pork
+intervention,4,2022-10-26T16:15:19Z,2022-10-26,Wed,16,TRUE,78,0,69,TRUE,8-14,8-14,Meat,Freshman,Female,Asian or Pacific Islander,TRUE,460,pork
+intervention,4,2022-10-26T16:35:12Z,2022-10-26,Wed,16,TRUE,58,31,73,FALSE,1-7,8-14,Flexitarian,Sophomore,Male,Prefer not to answer,TRUE,461,pork
+intervention,4,2022-10-26T16:36:03Z,2022-10-26,Wed,16,TRUE,100,16,89,TRUE,1-7,1-7,Meat,Freshman,Female,White or Caucasian,TRUE,462,pork
+intervention,4,2022-10-26T16:54:22Z,2022-10-26,Wed,16,TRUE,82,0,80,TRUE,8-14,1-7,Meat,Other,Male,Hispanic or Latino,TRUE,463,pork
+intervention,4,2022-10-27T16:18:07Z,2022-10-27,Thu,16,TRUE,77,30,73,FALSE,1-7,1-7,Flexitarian,Senior,Female,White or Caucasian,TRUE,469,chicken
+intervention,4,2022-10-28T11:29:18Z,2022-10-28,Fri,11,TRUE,73,5,81,FALSE,1-7,1-7,Flexitarian,Graduate student,Male,White or Caucasian,TRUE,472,chicken
+intervention,4,2022-10-28T14:19:50Z,2022-10-28,Fri,14,TRUE,83,11,90,FALSE,0,0,Vegan,Sophomore,Female,White or Caucasian,TRUE,473,chicken
+intervention,4,2022-10-28T14:20:52Z,2022-10-28,Fri,14,TRUE,100,30,75,TRUE,15-21,0,Meat,Sophomore,Male,Asian or Pacific Islander,TRUE,474,chicken
+intervention,4,2022-10-28T14:23:46Z,2022-10-28,Fri,14,TRUE,92,5,93,TRUE,15-21,15-21,Meat,Freshman,Female,White or Caucasian,TRUE,475,chicken
+intervention,4,2022-10-28T14:32:03Z,2022-10-28,Fri,14,TRUE,84,1,84,FALSE,1-7,1-7,Flexitarian,Junior,Female,White or Caucasian,TRUE,476,chicken
+intervention,4,2022-10-28T14:33:00Z,2022-10-28,Fri,14,TRUE,80,10,99,FALSE,1-7,1-7,Flexitarian,Junior,Female,White or Caucasian,TRUE,477,chicken
+intervention,4,2022-10-28T14:36:25Z,2022-10-28,Fri,14,TRUE,79,0,87,FALSE,0,1-7,Pescatarian,Sophomore,Female,Asian or Pacific Islander,TRUE,479,chicken
+intervention,4,2022-10-28T16:02:31Z,2022-10-28,Fri,16,TRUE,87,78,87,TRUE,8-14,0,Meat,Freshman,Female,Prefer not to answer,TRUE,480,chicken
+intervention,4,2022-10-28T16:03:25Z,2022-10-28,Fri,16,TRUE,70,28,74,TRUE,1-7,1-7,Flexitarian,Sophomore,Female,White or Caucasian,TRUE,481,chicken
+intervention,4,2022-10-28T16:13:17Z,2022-10-28,Fri,16,TRUE,73,37,87,FALSE,0,0,Vegan,Senior,Female,White or Caucasian,TRUE,482,chicken
+intervention,4,2022-10-28T16:14:03Z,2022-10-28,Fri,16,TRUE,65,25,73,FALSE,0,0,Vegan,Senior,Female,White or Caucasian,TRUE,483,chicken
+intervention,4,2022-10-28T16:26:33Z,2022-10-28,Fri,16,TRUE,100,0,100,FALSE,0,0,Vegan,Senior,Female,"Hispanic or Latino,White or Caucasian",TRUE,484,chicken
+intervention,4,2022-10-28T16:38:27Z,2022-10-28,Fri,16,TRUE,99,72,21,TRUE,1-7,8-14,Meat,Junior,Male,Asian or Pacific Islander,TRUE,485,chicken
+intervention,4,2022-10-28T16:40:18Z,2022-10-28,Fri,16,TRUE,93,19,76,TRUE,8-14,1-7,Meat,Junior,Female,"Asian or Pacific Islander,White or Caucasian",TRUE,486,chicken
+intervention,4,2022-10-28T16:47:52Z,2022-10-28,Fri,16,TRUE,96,10,87,FALSE,0,0,Vegetarian,Senior,Female,"Native American or Alaskan Native,White or Caucasian",TRUE,487,chicken
+control,5,2022-10-31T13:31:36Z,2022-10-31,Mon,13,TRUE,100,3,100,TRUE,8-14,0,Meat,Sophomore,Female,Hispanic or Latino,TRUE,494,NA
+control,5,2022-10-31T14:08:54Z,2022-10-31,Mon,14,TRUE,53,61,36,TRUE,1-7,1-7,Meat,Junior,Female,Prefer not to answer,TRUE,495,NA
+control,5,2022-10-31T15:06:03Z,2022-10-31,Mon,15,TRUE,98,15,80,TRUE,1-7,1-7,Flexitarian,Other,Male,White or Caucasian,TRUE,496,NA
+control,5,2022-10-31T15:37:13Z,2022-10-31,Mon,15,TRUE,92,10,87,FALSE,1-7,8-14,Meat,Junior,Male,Asian or Pacific Islander,TRUE,500,NA
+control,5,2022-10-31T15:47:50Z,2022-10-31,Mon,15,TRUE,71,27,68,TRUE,8-14,8-14,Meat,Junior,Female,"Asian or Pacific Islander,White or Caucasian",TRUE,501,NA
+control,5,2022-10-31T15:53:10Z,2022-10-31,Mon,15,TRUE,77,21,77,TRUE,8-14,1-7,Meat,Freshman,Male,Asian or Pacific Islander,TRUE,503,NA
+control,5,2022-10-31T15:53:40Z,2022-10-31,Mon,15,TRUE,72,26,81,TRUE,8-14,1-7,Meat,Freshman,Male,Asian or Pacific Islander,TRUE,504,NA
+control,5,2022-10-31T15:54:09Z,2022-10-31,Mon,15,TRUE,81,21,78,TRUE,8-14,1-7,Meat,Freshman,Male,Asian or Pacific Islander,TRUE,505,NA
+control,5,2022-10-31T15:54:36Z,2022-10-31,Mon,15,TRUE,83,26,81,TRUE,8-14,1-7,Meat,Freshman,Male,Asian or Pacific Islander,TRUE,506,NA
+control,5,2022-10-31T16:02:09Z,2022-10-31,Mon,16,TRUE,56,50,50,TRUE,15-21,15-21,Meat,Sophomore,Male,Asian or Pacific Islander,TRUE,507,NA
+control,5,2022-10-31T16:13:10Z,2022-10-31,Mon,16,TRUE,45,63,0,FALSE,0,0,Vegetarian,Graduate student,Female,White or Caucasian,TRUE,511,NA
+control,5,2022-10-31T16:15:47Z,2022-10-31,Mon,16,TRUE,64,30,71,FALSE,0,0,Vegetarian,Sophomore,Female,Asian or Pacific Islander,TRUE,512,NA
+control,5,2022-10-31T16:16:07Z,2022-10-31,Mon,16,TRUE,100,0,100,FALSE,8-14,1-7,Meat,Graduate student,Male,"Hispanic or Latino,White or Caucasian",TRUE,513,NA
+control,5,2022-10-31T16:18:03Z,2022-10-31,Mon,16,TRUE,71,7,62,FALSE,1-7,0,Meat,Graduate student,Female,White or Caucasian,TRUE,515,NA
+control,5,2022-11-01T14:32:55Z,2022-11-01,Tue,14,TRUE,79,27,80,TRUE,1-7,1-7,Meat,Other,Male,White or Caucasian,TRUE,520,NA
+control,5,2022-11-01T15:25:35Z,2022-11-01,Tue,15,TRUE,72,78,76,TRUE,1-7,0,Meat,Senior,Female,"Asian or Pacific Islander,Hispanic or Latino",TRUE,521,NA
+control,5,2022-11-01T15:43:59Z,2022-11-01,Tue,15,TRUE,68,14,70,TRUE,8-14,0,Meat,Freshman,Female,Asian or Pacific Islander,TRUE,523,NA
+control,5,2022-11-01T15:44:18Z,2022-11-01,Tue,15,TRUE,88,14,82,TRUE,8-14,8-14,Meat,Freshman,Female,Prefer not to answer,TRUE,524,NA
+control,5,2022-11-01T15:45:19Z,2022-11-01,Tue,15,TRUE,83,83,100,TRUE,8-14,22+,Meat,Freshman,Male,Black or African American,TRUE,525,NA
+control,5,2022-11-01T15:45:47Z,2022-11-01,Tue,15,TRUE,64,59,61,TRUE,8-14,1-7,Meat,Freshman,Male,White or Caucasian,TRUE,526,NA
+control,5,2022-11-01T15:46:41Z,2022-11-01,Tue,15,TRUE,0,65,25,TRUE,8-14,1-7,Meat,Junior,Male,"Hispanic or Latino,White or Caucasian",TRUE,527,NA
+control,5,2022-11-01T16:10:12Z,2022-11-01,Tue,16,TRUE,96,14,100,TRUE,1-7,8-14,Meat,Junior,Male,Asian or Pacific Islander,TRUE,528,NA
+control,5,2022-11-01T16:25:44Z,2022-11-01,Tue,16,TRUE,100,19,82,TRUE,1-7,1-7,Meat,Sophomore,Male,"Asian or Pacific Islander,White or Caucasian",TRUE,529,NA
+control,5,2022-11-01T16:26:21Z,2022-11-01,Tue,16,TRUE,70,7,81,FALSE,0,0,Vegetarian,Junior,Female,White or Caucasian,TRUE,530,NA
+control,5,2022-11-01T16:27:35Z,2022-11-01,Tue,16,TRUE,64,65,67,FALSE,15-21,15-21,Meat,Sophomore,Male,Hispanic or Latino,TRUE,531,NA
+control,5,2022-11-02T15:15:10Z,2022-11-02,Wed,15,TRUE,81,11,78,TRUE,1-7,1-7,Meat,Graduate student,Female,Prefer not to answer,TRUE,536,NA
+control,5,2022-11-02T16:11:10Z,2022-11-02,Wed,16,TRUE,20,33,70,TRUE,1-7,8-14,Flexitarian,Sophomore,Male,Asian or Pacific Islander,TRUE,537,NA
+control,5,2022-11-03T14:31:38Z,2022-11-03,Thu,14,TRUE,86,28,85,TRUE,1-7,1-7,Flexitarian,Other,Male,White or Caucasian,TRUE,540,NA
+intervention,6,2022-11-07T14:03:46Z,2022-11-07,Mon,14,TRUE,85,18,86,TRUE,1-7,1-7,Meat,Senior,Female,Prefer not to answer,TRUE,549,NA
+intervention,6,2022-11-07T15:14:01Z,2022-11-07,Mon,15,TRUE,88,12,100,TRUE,1-7,0,Meat,Freshman,Female,Black or African American,TRUE,550,NA
+intervention,6,2022-11-07T15:14:40Z,2022-11-07,Mon,15,TRUE,68,28,28,TRUE,8-14,0,Meat,Freshman,Male,Black or African American,TRUE,551,NA
+intervention,6,2022-11-07T15:34:32Z,2022-11-07,Mon,15,TRUE,62,17,94,FALSE,1-7,1-7,Flexitarian,Senior,Female,White or Caucasian,TRUE,552,NA
+intervention,6,2022-11-08T15:24:52Z,2022-11-08,Tue,15,TRUE,79,18,80,TRUE,15-21,1-7,Meat,Sophomore,Male,White or Caucasian,TRUE,557,NA
+intervention,6,2022-11-08T15:25:00Z,2022-11-08,Tue,15,TRUE,38,83,41,FALSE,8-14,0,Meat,Sophomore,Female,Native American or Alaskan Native,TRUE,558,NA
+intervention,6,2022-11-08T15:56:52Z,2022-11-08,Tue,15,TRUE,89,38,86,TRUE,8-14,0,Meat,Freshman,Female,Asian or Pacific Islander,TRUE,559,NA
+intervention,6,2022-11-10T14:55:34Z,2022-11-10,Thu,14,TRUE,100,22,74,TRUE,15-21,1-7,Meat,Sophomore,Male,Hispanic or Latino,TRUE,562,NA
+intervention,6,2022-11-10T15:06:35Z,2022-11-10,Thu,15,TRUE,59,30,86,TRUE,1-7,1-7,Flexitarian,Freshman,Male,Asian or Pacific Islander,TRUE,563,NA
+intervention,6,2022-11-10T15:54:38Z,2022-11-10,Thu,15,TRUE,100,2,97,TRUE,8-14,8-14,Meat,Sophomore,Female,Hispanic or Latino,TRUE,564,NA
+intervention,6,2022-11-10T16:11:56Z,2022-11-10,Thu,16,TRUE,90,5,100,FALSE,1-7,1-7,Flexitarian,Junior,Female,"Hispanic or Latino,Native American or Alaskan Native,White or Caucasian",TRUE,565,NA
+intervention,6,2022-11-10T16:12:41Z,2022-11-10,Thu,16,TRUE,100,0,100,FALSE,1-7,1-7,Flexitarian,Junior,Female,"Hispanic or Latino,Native American or Alaskan Native,White or Caucasian",TRUE,566,NA
+intervention,6,2022-11-11T14:52:07Z,2022-11-11,Fri,14,TRUE,78,0,100,TRUE,8-14,1-7,Flexitarian,Senior,Female,"Asian or Pacific Islander,White or Caucasian",TRUE,572,NA
+intervention,6,2022-11-11T15:50:52Z,2022-11-11,Fri,15,TRUE,0,100,0,TRUE,8-14,1-7,Meat,Sophomore,Other,White or Caucasian,TRUE,573,NA
+intervention,6,2022-11-11T15:51:19Z,2022-11-11,Fri,15,TRUE,80,7,91,TRUE,15-21,1-7,Meat,Junior,Male,White or Caucasian,TRUE,574,NA
