@@ -51,7 +51,8 @@ conditions <- tibble(date = seq(start_date, end_date, by = "days")) |>
   filter(wday(date, week_start = 1) <= 5) |>
   mutate(condition = rep(c("control", "intervention"), each = 5, length.out = n()),
          condition = as_factor(condition),
-         week = rep(1:6, each = 5, length.out = n()))
+         week = rep(1:6, each = 5, length.out = n()),
+         stage = if_else(week <= 4, "main study", "self-serve"))
 
 survey_tidy <- survey_raw |>
   slice(3:n()) |> # first two rows are qualtrics metadata
@@ -89,7 +90,11 @@ survey <- survey_tidy |>
   left_join(day_meats, by = "date") |>
   mutate(across(where(is.character), as_factor))
 
-survey_filtered <- survey |> filter(target, in_range)
+survey_filtered <- survey |>
+  filter(target, in_range) |>
+  filter(stage == "main study") |>
+  select(-target, -in_range)
+
 # write_csv(survey_filtered, "data/SCOOPS_survey_filtered_2022-12-05.csv")
 
 survey_long <- survey_filtered |>
@@ -107,7 +112,7 @@ Remaining responses: `r survey |> filter(target, in_range) |> nrow()`
 
 Number of responses from each week/condition:
 ```{r}
-survey_filtered |> count(condition, week)
+survey_filtered |> count(week, condition)
 survey_filtered |> count(condition)
 ```
 
@@ -332,6 +337,10 @@ survey_fits_meat <- survey_long |>
   mutate(model_type = map(data, model_fun_type),
          coefs_type = map(model_type, coef_fun),
          fits_type = map(model_type, fits_fun_type))
+
+# survey_long |>
+#   group_by(measure, meat_inclusion, condition) |>
+#   summarise(mean_rating = mean(rating), n = n())
 ```
 
 Differences by condition, split by whether meat was included:
@@ -378,17 +387,25 @@ fits_meat <- survey_fits_meat |> select(measure, meat_inclusion, fits) |>
 survey_long <- survey_long |>
   mutate(meat_inclusion = if_else(meat_inclusion, "ate meat", "did not eat meat"))
 
+ns <- survey_long |> count(measure, condition, meat_inclusion) |>
+  mutate(n = glue("n = {n}"))
+  
 ggplot(survey_long, aes(x = condition, y = rating, color = condition)) +
+  coord_cartesian(clip = "off") +
   facet_nested_wrap(c(vars(measure), vars(meat_inclusion)), nrow = 1,
                     nest_line = nester, resect = resecter) +
   geom_sina(aes(group = date), size = 0.6, alpha = 0.6, maxwidth = 0.5) +
   geom_crossbar(aes(y = .fitted, ymin = .lower, ymax = .upper), width = 0.8,
                 # position = position_dodge(),
                 data = fits_meat) +
+  geom_text(aes(label = n), y = 105, family = .font, size = 2, colour = "grey20", data = ns) +
   scale_colour_ptol(guide = "none") +
-  labs(y = "Response") +
-  theme(axis.title.x = element_blank())
-# ggsave("plots/survey_conditions.png", width = 10, height = 4.5)
+  labs(y = "Response", caption = "Figure 4: Survey respondents' ratings of their satisfaction (left), hunger (middle), and fullness (right), separated by whether they ate meat in the meal\n(boxes indicate means and 95% confidence intervals).") +
+  theme(axis.title.x = element_blank(),
+        plot.caption = element_text(hjust = 0, size = rel(0.85)),
+        plot.caption.position = "plot")
+
+ggsave("plots/survey_conditions.png", width = 8.5, height = 4)
 ```
 
 <!-- Differences by condition and meat type, split by whether meat was included: -->
