@@ -25,7 +25,9 @@ theme_update(panel.grid = ggplot2::element_blank(),
              legend.key = ggplot2::element_blank(),
              panel.border = ggplot2::element_blank(),
              axis.line = ggplot2::element_line(),
-             strip.text = ggplot2::element_text(face = "bold"))
+             strip.text = ggplot2::element_text(face = "bold"),
+             plot.caption = element_text(hjust = 0, size = rel(0.7)),
+             plot.caption.position = "plot")
 
 coef_rename <- function(df) {
   df |>
@@ -111,16 +113,14 @@ ggplot(aes(x = condition, y = value, colour = stage)) +
   geom_pointrange(aes(y = .fitted, ymin = .lower, ymax = .upper), data = fits_1,
                   position = position_dodge(width = 0.2)) +
   scale_colour_ptol(name = "") +
-  labs(caption = "Figure 1: Weight measures for the target station at lunch when intervention was happening at lunch but not at dinner.") +
+  labs(caption = "Figure 1: Weight measures for the target station at lunch when intervention was happening at lunch but not at dinner\n(points represent individual days, ranges represent means and 95% confidence intervals).") +
   theme(strip.placement = "outside",
         axis.title = element_blank(),
         legend.position = "bottom",
         legend.key.width = unit(0.5, "lines"),
-        legend.box.spacing = unit(0, "points"),
-        plot.caption = element_text(hjust = 0, size = rel(0.7)),
-        plot.caption.position = "plot")
+        legend.box.spacing = unit(0, "points"))
 
-# ggsave("plots/study_lunch_target.png", width = 6, height = 3.5)
+ggsave("plots/study_lunch_target.png", width = 6, height = 3.5)
 ```
 
 ```{r weights_slopes, eval = FALSE, fig.width = 7, fig.height = 3}
@@ -215,13 +215,11 @@ ggplot(aes(x = condition, y = value)) + #, colour = stage)) +
   geom_pointrange(aes(y = .fitted, ymin = .lower, ymax = .upper), data = fits_2,
                   position = position_dodge(width = 0.2), color = main) +
   # scale_colour_ptol(name = "") +
-    labs(caption = "Figure 2: Weight measures for the dining hall at dinner when intervention was happening at lunch but not at dinner.") +
+    labs(caption = "Figure 2: Weight measures for the dining hall at dinner when intervention was happening at lunch but not at dinner\n(points represent individual days, ranges represent means and 95% confidence intervals).") +
   theme(strip.placement = "outside",
-        axis.title = element_blank(),
-        plot.caption = element_text(hjust = 0, size = rel(0.7)),
-        plot.caption.position = "plot")
+        axis.title = element_blank())
 
-# ggsave("plots/study_dinner.png", width = 6, height = 3)
+ggsave("plots/study_dinner.png", width = 6, height = 3)
 ```
 
 ## Dinner during self-serve
@@ -271,11 +269,9 @@ ggplot(aes(x = condition, y = value)) +
   geom_pointrange(aes(y = .fitted, ymin = .lower, ymax = .upper), data = fits_3,
                   color = self) +
   scale_colour_ptol(name = "") +
-    labs(caption = "Figure 3: Weight measures for the target station at dinner when intervention was happening at dinner.") +
+    labs(caption = "Figure 3: Weight measures for the target station at dinner when intervention was happening at dinner\n(points represent individual days, ranges represent means and 95% confidence intervals).") +
   theme(strip.placement = "outside",
-        axis.title = element_blank(),
-        plot.caption = element_text(hjust = 0, size = rel(0.7)),
-        plot.caption.position = "plot")
+        axis.title = element_blank())
 
-# ggsave("plots/self_dinner_target.png", width = 6, height = 3)
+ggsave("plots/self_dinner_target.png", width = 6, height = 3)
 ```
