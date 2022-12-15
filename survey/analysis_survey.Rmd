@@ -380,7 +380,7 @@ survey_fits_meat |> filter(meat_inclusion, measure == "hunger") |> pull(model) |
 
 Respondents who ate meat responded `r hunger_increase_meat` scale points higher in intervention that in control.
 
-```{r meat-inclusion, fig.width=10, fig.height=4.5}
+```{r meat-inclusion, fig.width=8.5, fig.height=4}
 fits_meat <- survey_fits_meat |> select(measure, meat_inclusion, fits) |>
   unnest(fits) |>
   mutate(meat_inclusion = if_else(meat_inclusion, "ate meat", "did not eat meat"))
