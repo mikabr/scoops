@@ -1,0 +1,111 @@
+---
+output:
+  html_document: 
+    highlight_downlit: yes
+    theme: cosmo
+    df_print: paged
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(effsize)
+library(pwr)
+library(precisely)
+
+.font <- "Source Sans Pro"
+theme_set(theme_bw(base_family = .font))
+theme_update(panel.grid = ggplot2::element_blank(),
+             strip.background = ggplot2::element_blank(),
+             legend.key = ggplot2::element_blank(),
+             panel.border = ggplot2::element_blank(),
+             axis.line = ggplot2::element_line(),
+             strip.text = ggplot2::element_text(face = "bold"),
+             plot.caption = element_text(hjust = 0, size = rel(0.7)),
+             plot.caption.position = "plot")
+```
+
+__Data__ -- target station at lunch
+
+__Measure__ -- difference in before/after weights
+
+```{r}
+weights_summary <- read_rds("data/weights_summary_2022-12-13.rds")
+
+study_lunch_target <- weights_summary |>
+  filter(stage != "self-serve", meal == "lunch", station == "target")
+
+study_lunch_target |>
+  group_by(condition) |>
+  summarise(n = n(), mean_delta = mean(delta), sd = sd(delta))
+```
+
+## Power
+
+t-test
+```{r}
+control <- study_lunch_target |> filter(condition == "control")
+intervention <- study_lunch_target |> filter(condition == "intervention")
+
+t.test(control$delta, intervention$delta)
+```
+
+calculate effect size
+```{r}
+cd <- cohen.d(control$delta, intervention$delta)
+cd
+```
+
+calculate power for planned sample size
+```{r}
+pwr.t.test(d = cd$estimate, n = 15, type = "two.sample")
+```
+
+calculate sample sizes for a range of power values
+```{r}
+powers <- tibble(power = seq(0.3, 0.95, 0.05),
+                 n = round(map_dbl(power, \(p) pwr.t.test(d = cd$estimate, power = p, type = "two.sample")$n)))
+ggplot(powers, aes(x = power, y = n)) +
+  geom_point() +
+  scale_x_continuous(breaks = powers$power, name = "Power") +
+  scale_y_continuous(breaks = powers$n, name = "Number of samples (per group)")
+```
+
+Repeat above but only for main study (excluding pilot data)
+
+```{r}
+study_lunch_target |>
+  filter(source == "study") |>
+  group_by(condition) |>
+  summarise(n = n(), mean_delta = mean(delta), sd = sd(delta))
+
+control_study <- control |> filter(source == "study")
+intervention_study <- intervention |> filter(source == "study")
+
+t.test(control_study$delta, intervention_study$delta)
+
+cd_study <- cohen.d(control_study$delta, intervention_study$delta)
+cd_study
+
+pwr.t.test(d = cd_study$estimate, n = 15, type = "two.sample")
+
+powers <- tibble(power = seq(0.3, 0.95, 0.05),
+                 n = round(map_dbl(power, \(p) pwr.t.test(d = cd_study$estimate, power = p, type = "two.sample")$n)))
+ggplot(powers, aes(x = power, y = n)) +
+  geom_point() +
+  scale_x_continuous(breaks = powers$power, name = "Power") +
+  scale_y_continuous(breaks = powers$n, name = "Number of samples (per group)")
+```
+
+
+## Precision
+
+```{r}
+# precisely::n_risk_difference(
+#   precision = .08,
+#   exposed = .4,
+#   unexposed = .3,
+#   group_ratio = 1, # unexposed to exposed ratio
+#   ci = 0.95
+# )
+```
