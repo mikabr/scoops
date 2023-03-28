@@ -36,9 +36,9 @@ theme_update(panel.grid = ggplot2::element_blank(),
 ## Load and tidy data
 
 ```{r, echo=FALSE, eval=FALSE}
-read_csv("private/SCOOPS_qualtrics_2022-12-05.csv") |>
-  select(-IPAddress, -email, -LocationLatitude, -LocationLongitude) |>
-  write_csv("data/SCOOPS_qualtrics_sanitized_2022-12-05.csv")
+# read_csv("private/SCOOPS_qualtrics_2022-12-05.csv") |>
+#   select(-IPAddress, -email, -LocationLatitude, -LocationLongitude) |>
+#   write_csv("data/SCOOPS_qualtrics_sanitized_2022-12-05.csv")
 ```
 
 ```{r}

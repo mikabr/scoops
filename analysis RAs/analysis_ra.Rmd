@@ -1,0 +1,149 @@
+---
+output: html_document
+---
+
+# Part 1
+
+```{r}
+library(tidyverse)
+```
+
+1
+```{r}
+study_weights <- read_csv("data/SCOOPS datasets - study_weights.csv")
+```
+
+2
+```{r}
+empty_trays <- read_csv("data/SCOOPS datasets - empty_trays.csv")
+weights_trays <- study_weights |>
+  left_join(empty_trays, by = c("before_type" = "type"))
+```
+
+3
+```{r}
+weights_adjusted <- weights_trays |>
+  mutate(before_adjusted = if_else(before_deducted, before_weight,
+                                   before_weight - empty_weight),
+         before_total = before_number * before_adjusted)
+```
+
+4
+```{r}
+weights_totaled <- weights_adjusted |>
+  mutate(after_total = after_full_number * before_adjusted + after_partial_weights_total,
+         weight_delta = before_total - after_total)
+```
+
+5
+```{r}
+weights_summary <- weights_totaled |>
+  group_by(source, condition, week, day, meal, station, meat_type) |>
+  summarise(weight_delta = sum(weight_delta, na.rm = TRUE)) |>
+  ungroup()
+```
+
+6
+```{r}
+pilot_weights <- read_csv("data/SCOOPS datasets - pilot_weights.csv")
+weights_combined <- weights_summary |> bind_rows(pilot_weights)
+```
+
+8
+```{r}
+weights_target <- weights_combined |>
+  filter(station == "target", meal == "lunch")
+
+weights_nontarget <- weights_combined |>
+  filter(station == "non_target", meal == "dinner")
+
+weights_total <- weights_combined |>
+  filter(meal == "dinner") |>
+  group_by(source, condition, week, day) |>
+  summarise(weight_delta = sum(weight_delta), n = n()) |>
+  ungroup()
+```
+
+9
+```{r}
+weights_target |> count(condition)
+weights_nontarget |> count(condition)
+weights_total |> count(condition)
+```
+
+debugging totals
+```{r}
+weights_combined |>
+  filter(station == "target") |>
+  count(condition)
+# 27, 16 / 11
+# melissa's numbers are right but should be filtered to lunch
+
+weights_combined |>
+  filter(station != "target") |>
+  count(condition)
+#  21, 12 / 9
+
+weights_combined |>
+  group_by(source, condition, week, day, meal, meat_type) |>
+  filter(n() < 2)
+```
+
+instructions:
+target: 31, 17 control / 14 intervention
+total: 17, 12 control / 9 intervention
+
+melissa:
+target: 27, 16 control / 11 intervention
+total: 31, 17 control / 14 intervention
+
+
+# Part 2
+
+Main comparison of interest: condition vs. intervention for intervention target (Cardinal Sage at lunch).
+```{r}
+ggplot(weights_target, aes(x = condition, y = weight_delta)) +
+  geom_text(aes(label = day, colour = source), size = 2,
+            position = position_dodge(width = 0.2)) +
+  stat_summary(geom = "crossbar", width = 0.4)
+```
+
+Second comparison of interest: spillover effects, i.e. total at dinner.
+```{r}
+ggplot(weights_total, aes(x = condition, y = weight_delta)) +
+  geom_text(aes(label = day), size = 2,
+            position = position_dodge(width = 0.2)) +
+  stat_summary(geom = "crossbar", width = 0.4)
+```
+
+# Part 3
+
+Main comparison
+```{r}
+m1 <- lm(weight_delta ~ condition + source, weights_target)
+summary(m1)
+```
+
+Spillover effects
+```{r}
+m2 <- lm(weight_delta ~ condition, weights_total)
+summary(m2)
+```
+
+```{r}
+f1 <- augment(m1, newdata = weights_target |> distinct(condition, source),
+              interval = "confidence")
+
+ggplot(weights_target, aes(x = condition, y = weight_delta)) +
+  geom_text(aes(label = day, colour = source), size = 2,
+            position = position_dodge(width = 0.2)) +
+  geom_pointrange(aes(y = .fitted, ymin = .lower, ymax = .upper), data = f1)
+
+
+f2 <- augment(m2, newdata = weights_nontarget |> distinct(condition),
+              interval = "confidence")
+ggplot(weights_total, aes(x = condition, y = weight_delta)) +
+  geom_text(aes(label = day), size = 2,
+            position = position_dodge(width = 0.2)) +
+  geom_pointrange(aes(y = .fitted, ymin = .lower, ymax = .upper), data = f2)
+```

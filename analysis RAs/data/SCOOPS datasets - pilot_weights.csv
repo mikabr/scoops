@@ -1,0 +1,11 @@
+source,condition,week,day,meal,station,meat_type,weight_delta
+pilot,control,1,M,lunch,target,pork,102.3
+pilot,control,1,T,lunch,target,chicken,141.2
+pilot,control,1,W,lunch,target,pork,112.8
+pilot,control,1,R,lunch,target,chicken,81.4
+pilot,control,1,F,lunch,target,beef,92.5
+pilot,intervention,2,M,lunch,target,chicken,103.3
+pilot,intervention,2,T,lunch,target,beef,71.9
+pilot,intervention,2,W,lunch,target,pork,74.7
+pilot,intervention,2,R,lunch,target,chicken,88.7
+pilot,intervention,2,F,lunch,target,chicken,101.7
